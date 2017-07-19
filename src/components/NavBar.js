@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Header is a stateless functional component
 function NavBar (props) {
@@ -9,24 +10,25 @@ function NavBar (props) {
           <div className='navbar-collapse collapse'>
             <ul className='nav navbar-nav'>
               <li className='dropdown active'>
-                <a
+                <Link
+                  to='/'
                   className='dropdown-toggle animated fadeIn animation-delay-4'
                   data-toggle='dropdown'
                   data-hover='dropdown'
                   data-name='home'
-                >
-                  Home
-                </a>
+                >Home</Link>
+
               </li>
               <li className='dropdown'>
-                <a
+                <Link
+                  to='/add'
                   className='dropdown-toggle animated fadeIn animation-delay-4'
                   data-toggle='dropdown'
                   data-hover='dropdown'
                   data-name='add'
                 >
                   Add Item
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
