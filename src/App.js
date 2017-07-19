@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import * as InventoryAPI from './utils/InventoryAPI';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
 import ListItems from './components/ListItems';
+import AddItem from './components/AddItem';
 
 class App extends Component {
 
@@ -25,13 +27,18 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header />
-        <NavBar />
-        <div className='row'>
-          <ListItems items={this.state.items}></ListItems>
-        </div>
-      </div>
+      <Router>
+        <div className="App">
+          <Header />
+          <NavBar />
+          <Route exact path='/' render={() => (
+            <div className='row'>
+              <ListItems items={this.state.items}></ListItems>
+            </div>
+          )} />
+          <Route path='/add' component={AddItem} />
+            </div>
+      </Router>
     );
   }
 }
