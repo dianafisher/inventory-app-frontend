@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import serializeForm from 'form-serialize';
 
 class AddItem extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
+    const values = serializeForm(e.target, { hash: true });
+    console.log(values);
   }
 
   render() {
@@ -24,6 +26,24 @@ class AddItem extends Component {
                       <label className='col-md-2 control-label' htmlFor='ms-form-title'>Title</label>
                       <div className='col-md-9'>
                         <input className='form-control' type='text' id='ms-form-title' name='title' placeholder='Title' />
+                      </div>
+                    </div>
+                    <div className='form-group'>
+                      <label className='col-md-2 control-label' htmlFor='ms-form-upc'>UPC</label>
+                      <div className='col-md-9'>
+                        <input className='form-control' type='text' id='ms-form-upc' name='upc' placeholder='UPC' />
+                      </div>
+                    </div>
+                    <div className='form-group'>
+                      <label className='col-md-2 control-label' htmlFor='ms-form-description'>Description</label>
+                      <div className='col-md-9'>
+                        <input className='form-control' type='text' id='ms-form-description' name='description' placeholder='Description' />
+                      </div>
+                    </div>
+                    <div className='form-group'>
+                      <label className='col-md-2 control-label' htmlFor='ms-form-brand'>Brand</label>
+                      <div className='col-md-9'>
+                        <input className='form-control' type='text' id='ms-form-brand' name='brand' placeholder='Brand' />
                       </div>
                     </div>
                     <div className='form-group'>
