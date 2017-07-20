@@ -25,6 +25,12 @@ class App extends Component {
     });
   }
 
+  addItem = (item) => {
+    InventoryAPI.addItem(item).then((item) => {
+
+    });
+  }
+
   render() {
     return (
       <Router>
@@ -36,7 +42,9 @@ class App extends Component {
               <ListItems items={this.state.items}></ListItems>
             </div>
           )} />
-          <Route path='/add' component={AddItem} />
+          <Route path='/add' render={({ history }) => (
+            <AddItem onAddItem={this.addItem}></AddItem>
+          )}/>
             </div>
       </Router>
     );

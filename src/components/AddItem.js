@@ -4,10 +4,22 @@ import serializeForm from 'form-serialize';
 
 class AddItem extends Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
     console.log(values);
+    this.props.onAddItem(values);
+  }
+
+  handleInputChange = (e) => {
+    const target = e.target;
+    console.log(target.type);
+    const name = target.name;
+    console.log(name);
   }
 
   render() {
@@ -25,31 +37,63 @@ class AddItem extends Component {
                     <div className='form-group'>
                       <label className='col-md-2 control-label' htmlFor='ms-form-title'>Title</label>
                       <div className='col-md-9'>
-                        <input className='form-control' type='text' id='ms-form-title' name='title' placeholder='Title' />
+                        <input
+                          className='form-control'
+                          type='text'
+                          id='ms-form-title'
+                          name='title'
+                          placeholder='Title'
+                          onChange={this.handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className='form-group'>
                       <label className='col-md-2 control-label' htmlFor='ms-form-upc'>UPC</label>
                       <div className='col-md-9'>
-                        <input className='form-control' type='text' id='ms-form-upc' name='upc' placeholder='UPC' />
+                        <input
+                          className='form-control'
+                          type='text' id='ms-form-upc'
+                          name='upc' placeholder='UPC'
+                          onChange={this.handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className='form-group'>
                       <label className='col-md-2 control-label' htmlFor='ms-form-description'>Description</label>
                       <div className='col-md-9'>
-                        <input className='form-control' type='text' id='ms-form-description' name='description' placeholder='Description' />
+                        <input
+                          className='form-control'
+                          type='text'
+                          id='ms-form-description'
+                          name='description'
+                          placeholder='Description'
+                          onChange={this.handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className='form-group'>
                       <label className='col-md-2 control-label' htmlFor='ms-form-brand'>Brand</label>
                       <div className='col-md-9'>
-                        <input className='form-control' type='text' id='ms-form-brand' name='brand' placeholder='Brand' />
+                        <input
+                          className='form-control'
+                          type='text'
+                          id='ms-form-brand'
+                          name='brand'
+                          placeholder='Brand'
+                          onChange={this.handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className='form-group'>
                       <label className='col-md-2 control-label' htmlFor='ms-form-image'>Image URL</label>
                       <div className='col-md-9'>
-                        <input className='form-control' type='text' name='imageUrl' placeholder='Image URL' />
+                        <input
+                          className='form-control'
+                          type='text'
+                          name='imageUrl'
+                          placeholder='Image URL'
+                          onChange={this.handleInputChange}
+                        />
                       </div>
                     </div>
                     <div className='form-group'>

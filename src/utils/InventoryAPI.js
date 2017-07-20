@@ -12,6 +12,15 @@ export const getItems = () => {
       } else {
         console.log(data.error);
         return [];
-      }      
+      }
     });
+}
+
+export const addItem = (item) => {
+  return axios.post(`${api}/items`, {
+    item: item
+  })
+    .then(function(response){
+      console.log(response);
+    })
 }
