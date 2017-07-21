@@ -7,6 +7,7 @@ import Header from './components/Header';
 import NavBar from './components/NavBar';
 import ListItems from './components/ListItems';
 import AddItem from './components/AddItem';
+import UPCLookup from './components/UPCLookup';
 
 class App extends Component {
 
@@ -31,6 +32,12 @@ class App extends Component {
     });
   }
 
+  upcLookup = (upc) => {
+    InventoryAPI.upcLookup(upc).then((result) => {
+
+    });
+  }
+
   render() {
     return (
       <Router>
@@ -44,8 +51,11 @@ class App extends Component {
           )} />
           <Route path='/add' render={({ history }) => (
             <AddItem onAddItem={this.addItem}></AddItem>
-          )}/>
-            </div>
+          )} />
+          <Route path='/upc' render={( { history }) => (
+            <UPCLookup onUPCLookup={this.upcLookup}></UPCLookup>
+          )} />
+        </div>
       </Router>
     );
   }

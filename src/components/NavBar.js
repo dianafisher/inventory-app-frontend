@@ -30,6 +30,17 @@ function NavBar (props) {
                   Add Item
                 </Link>
               </li>
+              <li className='dropdown'>
+                <Link
+                  to='/upc'
+                  className='dropdown-toggle animated fadeIn animation-delay-4'
+                  data-toggle='dropdown'
+                  data-hover='dropdown'
+                  data-name='add'
+                >
+                  UPC Lookup
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

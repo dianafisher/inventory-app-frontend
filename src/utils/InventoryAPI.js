@@ -17,9 +17,16 @@ export const getItems = () => {
 }
 
 export const addItem = (item) => {
-  return axios.post(`${api}/items`, {
-    item: item
-  })
+  return axios.post(`${api}/items`, item)
+    .then(function(response){
+      console.log(response);
+    })
+}
+
+export const upcLookup = (data) => {
+  data.collection = 'items';
+  console.log(data);
+  return axios.put(`${api}/upc`, data)
     .then(function(response){
       console.log(response);
     })
