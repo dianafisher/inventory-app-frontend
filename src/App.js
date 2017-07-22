@@ -8,13 +8,13 @@ import NavBar from './components/NavBar';
 import ListItems from './components/ListItems';
 import AddItem from './components/AddItem';
 import UPCLookup from './components/UPCLookup';
-import Error from './components/Error';
+import Alert from './components/Alert';
 
 class App extends Component {
 
   state = {
     items: [],
-    errors: []
+    alerts: []
   }
 
   componentDidMount() {
@@ -22,8 +22,14 @@ class App extends Component {
   }
 
   closeAlert(idx) {
-    console.log('closeAlert called');
-    console.log(idx);
+
+    // remove the alert at this index
+    let alerts = this.state.alerts.filter((a, index) => {      
+      return idx !== index;
+    });
+
+    // update the state
+    this.setState({ alerts });
   }
 
   getItems = () => {
@@ -41,11 +47,15 @@ class App extends Component {
     .catch((error) => {
       console.log('error: ' + error);
       if (error.response) {
-        // console.log(error.response.headers);
         // console.log(error.response.status);
         console.log(error.response.data);
         const errors = error.response.data.errors;
-        this.setState({ errors });
+        let alerts = errors.map((error) => {
+          error.type = 'error';
+          return error;
+        });
+        console.log(alerts);
+        this.setState({ alerts });
       }
 
     });
@@ -58,20 +68,21 @@ class App extends Component {
   }
 
   render() {
-    let errors = this.state.errors;
+    let alerts = this.state.alerts;
 
     return (
       <Router>
         <div className="App">
           <Header />
           <NavBar />
-          { errors && (
-            errors.map((error, idx) => (
-              <Error
+          { alerts && (
+            alerts.map((a, idx) => (
+              <Alert
                 key={idx}
-                msg={error.msg}
+                type={a.type}
+                msg={a.msg}
                 onCloseAlert={this.closeAlert.bind(this, idx)}
-              ></Error>
+              ></Alert>
             ))
           )}
           <Route exact path='/' render={() => (

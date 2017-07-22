@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function Error (props) {
+function Alert (props) {
   return (
       <div className='alert alert-danger alert-dismissible' role='alert'>
         <button
@@ -22,4 +22,4 @@ function Error (props) {
   )
 }
 
-export default Error;
+export default Alert;
