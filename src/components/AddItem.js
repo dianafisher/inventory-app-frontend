@@ -99,7 +99,6 @@ class AddItem extends Component {
                     <div className='form-group'>
                       <div className='col-md-9 col-md-offset-2'>
                         <button type='submit' className='btn btn-raised btn-primary'>Submit</button>
-                        <button type='submit' className='btn btn-raised btn-default'>Cancel</button>
                       </div>
                     </div>
                   </fieldset>
