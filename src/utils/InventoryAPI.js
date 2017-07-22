@@ -7,8 +7,8 @@ export const getItems = () => {
     .then(function(response) {
       console.log(response);
       const data = response.data;
-      if (data.success) {
-        return data.documents;
+      if (data.items) {
+        return data.items;
       } else {
         console.log(data.error);
         return [];
@@ -18,9 +18,9 @@ export const getItems = () => {
 
 export const addItem = (item) => {
   return axios.post(`${api}/items`, item)
-    .then(function(response){
+    .then(function(response) {
       console.log(response);
-    })
+    })    
 }
 
 export const upcLookup = (data) => {

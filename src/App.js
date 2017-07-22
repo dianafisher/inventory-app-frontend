@@ -8,15 +8,22 @@ import NavBar from './components/NavBar';
 import ListItems from './components/ListItems';
 import AddItem from './components/AddItem';
 import UPCLookup from './components/UPCLookup';
+import Error from './components/Error';
 
 class App extends Component {
 
   state = {
-    items: []
+    items: [],
+    errors: []
   }
 
   componentDidMount() {
     this.getItems();
+  }
+
+  closeAlert(idx) {
+    console.log('closeAlert called');
+    console.log(idx);
   }
 
   getItems = () => {
@@ -27,7 +34,19 @@ class App extends Component {
   }
 
   addItem = (item) => {
-    InventoryAPI.addItem(item).then((item) => {
+    InventoryAPI.addItem(item)
+    .then((item) => {
+
+    })
+    .catch((error) => {
+      console.log('error: ' + error);
+      if (error.response) {
+        // console.log(error.response.headers);
+        // console.log(error.response.status);
+        console.log(error.response.data);
+        const errors = error.response.data.errors;
+        this.setState({ errors });
+      }
 
     });
   }
@@ -39,11 +58,22 @@ class App extends Component {
   }
 
   render() {
+    let errors = this.state.errors;
+
     return (
       <Router>
         <div className="App">
           <Header />
           <NavBar />
+          { errors && (
+            errors.map((error, idx) => (
+              <Error
+                key={idx}
+                msg={error.msg}
+                onCloseAlert={this.closeAlert.bind(this, idx)}
+              ></Error>
+            ))
+          )}
           <Route exact path='/' render={() => (
             <div className='row'>
               <ListItems items={this.state.items}></ListItems>
