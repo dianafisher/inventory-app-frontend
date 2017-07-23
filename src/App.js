@@ -9,6 +9,7 @@ import ListItems from './components/ListItems';
 import AddItem from './components/AddItem';
 import UPCLookup from './components/UPCLookup';
 import Alert from './components/Alert';
+import ItemDetails from './components/ItemDetails';
 
 class App extends Component {
 
@@ -24,7 +25,7 @@ class App extends Component {
   closeAlert(idx) {
 
     // remove the alert at this index
-    let alerts = this.state.alerts.filter((a, index) => {      
+    let alerts = this.state.alerts.filter((a, index) => {
       return idx !== index;
     });
 
@@ -96,6 +97,7 @@ class App extends Component {
           <Route path='/upc' render={( { history }) => (
             <UPCLookup onUPCLookup={this.upcLookup}></UPCLookup>
           )} />
+          <Route path='/item/:id' component={ItemDetails} />
         </div>
       </Router>
     );
