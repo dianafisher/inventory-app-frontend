@@ -10,6 +10,8 @@ import AddItem from './components/AddItem';
 import UPCLookup from './components/UPCLookup';
 import Alert from './components/Alert';
 import ItemDetails from './components/ItemDetails';
+import Login from './components/Login';
+import Register from './components/Register';
 
 class App extends Component {
 
@@ -98,6 +100,8 @@ class App extends Component {
             <UPCLookup onUPCLookup={this.upcLookup}></UPCLookup>
           )} />
           <Route path='/item/:id' component={ItemDetails} />
+          <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
         </div>
       </Router>
     );

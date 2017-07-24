@@ -13,7 +13,6 @@ function Item (props) {
           </div>
         </Link>
       </div>
-      
     </div>
   )
 }
