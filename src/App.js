@@ -70,6 +70,26 @@ class App extends Component {
     });
   }
 
+  registerUser = (user) => {
+    InventoryAPI.registerUser(user)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log('error: ' + error);
+      if (error.response) {
+        console.log(error.response.data);
+        let alerts = [];
+        alerts.push({
+          type: 'error',
+          msg: error.response.data.message
+        });
+        console.log(alerts);
+        this.setState({ alerts });
+      }
+    });
+  }
+
   render() {
     let alerts = this.state.alerts;
 
@@ -101,7 +121,9 @@ class App extends Component {
           )} />
           <Route path='/item/:id' component={ItemDetails} />
           <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
+          <Route path='/register' render={( { history }) => (
+            <Register onRegisterUser={this.registerUser}></Register>
+          )} />
         </div>
       </Router>
     );

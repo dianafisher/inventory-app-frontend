@@ -42,3 +42,10 @@ export const upcLookup = (data) => {
       console.log(response);
     })
 }
+
+export const registerUser = (user) => {
+  return axios.post(`${api}/register`, user)
+    .then(function(response) {
+      console.log(response);
+    });
+}

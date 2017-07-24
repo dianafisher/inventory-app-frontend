@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import serializeForm from 'form-serialize';
 
 class Register extends Component {
@@ -18,7 +18,7 @@ class Register extends Component {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
     console.log(values);
-    // this.props.onUPCLookup(values);
+    this.props.onRegisterUser(values);
   }
 
   handleInputChange = (e) => {
@@ -100,6 +100,10 @@ class Register extends Component {
       </div>
     )
   }
+}
+
+Register.propTypes = {
+  onRegisterUser: PropTypes.func.isRequired
 }
 
 export default Register;

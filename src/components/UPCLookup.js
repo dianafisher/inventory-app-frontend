@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import serializeForm from 'form-serialize';
 
 class UPCLookup extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      upc: ''
+    };
   }
 
   handleSubmit = (e) => {
@@ -20,6 +24,8 @@ class UPCLookup extends Component {
     console.log(target.type);
     const name = target.name;
     console.log(name);
+
+    // TODO update state based on text entered in upc form input
   }
 
   render() {
@@ -65,6 +71,10 @@ class UPCLookup extends Component {
       </div>
     )
   }
+}
+
+UPCLookup.propTypes = {
+  onUPCLookup: PropTypes.func.isRequired
 }
 
 export default UPCLookup;

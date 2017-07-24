@@ -26,9 +26,9 @@ function Login (props) {
                 <form className="form-horizontal">
                   <fieldset>
                     <div className="form-group">
-                      <label htmlFor="inputUsername" className="col-md-2 control-label">Username</label>
+                      <label htmlFor="inputEmail" className="col-md-2 control-label">Email</label>
                       <div className="col-md-10">
-                        <input type="username" className="form-control" id="inputUsername" placeholder="Username" />
+                        <input type="email" className="form-control" id="inputEmail" placeholder="Email" />
                       </div>
                     </div>
                     <div className="form-group">
@@ -44,13 +44,13 @@ function Login (props) {
                 </form>
                 <div className="text-center mt-4">
                   <h3>Login with</h3>
-                  <a href="javascript:void(0)" className="btn-circle btn-facebook">
+                  <a href="#" className="btn-circle btn-facebook">
                     <i className="zmdi zmdi-facebook"></i>
                   </a>
-                  <a href="javascript:void(0)" className="btn-circle btn-twitter">
+                  <a href="#" className="btn-circle btn-twitter">
                     <i className="zmdi zmdi-twitter"></i>
                   </a>
-                  <a href="javascript:void(0)" className="btn-circle btn-google">
+                  <a href="#" className="btn-circle btn-google">
                     <i className="zmdi zmdi-google"></i>
                   </a>
                 </div>
