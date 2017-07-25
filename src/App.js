@@ -90,6 +90,16 @@ class App extends Component {
     });
   }
 
+  loginUser = (user) => {
+    InventoryAPI.login(user)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log('error: ' + error);
+      })
+  }
+
   render() {
     let alerts = this.state.alerts;
 
@@ -120,7 +130,9 @@ class App extends Component {
             <UPCLookup onUPCLookup={this.upcLookup}></UPCLookup>
           )} />
           <Route path='/item/:id' component={ItemDetails} />
-          <Route path='/login' component={Login} />
+          <Route path='/login' render={( { history }) => (
+            <Login onLoginUser={this.loginUser}></Login>
+          )} />
           <Route path='/register' render={( { history }) => (
             <Register onRegisterUser={this.registerUser}></Register>
           )} />

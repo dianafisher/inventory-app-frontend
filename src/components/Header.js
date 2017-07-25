@@ -21,12 +21,14 @@ function Header (props) {
           >
             <i className="zmdi zmdi-account"></i>
           </Link>
+
           <Link
             className='btn-circle btn-circle-primary no-focus animated zoomInDown animation-delay-4'
             to='/register'
           >
             <i className="zmdi zmdi-account-add"></i>
           </Link>
+          
         </div>
       </div>
     </header>

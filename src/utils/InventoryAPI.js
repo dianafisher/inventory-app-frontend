@@ -49,3 +49,10 @@ export const registerUser = (user) => {
       console.log(response);
     });
 }
+
+export const login = (user) => {
+  return axios.post(`${api}/login`, user)
+    .then(function(response) {
+      console.log(response);
+    });
+}
