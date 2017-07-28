@@ -17,10 +17,13 @@ class App extends Component {
 
   state = {
     items: [],
-    alerts: []
+    alerts: [],
+    token: '',
+    user: null
   }
 
   componentDidMount() {
+    this.loadJwtToken();
     this.getItems();
   }
 
@@ -36,7 +39,8 @@ class App extends Component {
   }
 
   getItems = () => {
-    InventoryAPI.getItems().then((items) => {
+    const token = this.loadJwtToken();
+    InventoryAPI.getItems(token).then((items) => {
       console.log(items);
       this.setState({ items })
     });
@@ -65,10 +69,24 @@ class App extends Component {
   }
 
   upcLookup = (upc) => {
-    InventoryAPI.upcLookup(upc).then((result) => {
-
+    const token = this.loadJwtToken();
+    InventoryAPI.upcLookup(token, upc).then((result) => {
     });
   }
+
+  loadJwtToken = () => {
+    const token = localStorage.getItem('jwt_token');
+    if (token.length > 0) {
+      const user = this.parseJwt(token);
+      this.setState({ token, user });
+    }
+  }
+
+  parseJwt = (token) => {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+  };
 
   registerUser = (user) => {
     InventoryAPI.registerUser(user)
@@ -94,10 +112,24 @@ class App extends Component {
     InventoryAPI.login(user)
       .then((result) => {
         console.log(result);
+        const token = result.token;
+        const user = this.parseJwt(token);
+        console.log(token);
+        let alerts = [];
+        alerts.push({
+          type: 'success',
+          msg: result.message
+        });
+        this.setState({ alerts, token, user });
       })
       .catch((error) => {
         console.log('error: ' + error);
       })
+  }
+
+  logout = () => {
+    InventoryAPI.logout();
+    this.setState({ token: '', user: null });
   }
 
   render() {
@@ -106,7 +138,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Header />
+          <Header user={this.state.user} onLogout={this.logout}/>
           <NavBar />
           { alerts && (
             alerts.map((a, idx) => (

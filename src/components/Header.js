@@ -28,8 +28,20 @@ function Header (props) {
           >
             <i className="zmdi zmdi-account-add"></i>
           </Link>
-          
+          { props.user !== null &&
+            <div className='row'>
+              Logged in as { props.user.name }
+              <button className='btn btn-raised color-primary btn-white' onClick={props.onLogout}>
+                Logout <i className="fa fa-sign-out" aria-hidden="true"></i>
+              </button>
+              {/* <button className='btn-circle btn-circle-raised btn-circle-white btn-circle-primary'>
+                <i className="fa fa-sign-out" aria-hidden="true"></i>
+              </button> */}
+            </div>
+          }
         </div>
+
+
       </div>
     </header>
   )

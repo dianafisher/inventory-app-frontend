@@ -2,8 +2,20 @@ import React from 'react';
 
 
 function Alert (props) {
+  console.log(props);
+  const type = props.type;
+  let className, text, iconClassName;
+  if (type === 'success') {
+    className = 'alert alert-success alert dimissible';
+    text = 'Success!';
+    iconClassName = 'zmdi zmdi-check';
+  } else if (type === 'error') {
+    className = 'alert alert-danger alert dimissible';
+    text = 'Error!';
+    iconClassName = 'zmdi zmdi-close-circle';
+  }
   return (
-      <div className='alert alert-danger alert-dismissible' role='alert'>
+      <div className={className} role='alert'>
         <button
           type='button'
           className='close'
@@ -14,10 +26,10 @@ function Alert (props) {
           <i className='zmdi zmdi-close'></i>
         </button>
         <strong>
-          <i className='zmdi zmdi-close-circle'></i>
-          Error!
+          <i className={iconClassName}></i>
+          {text}
         </strong>
-        <div>{props.msg}</div>
+        {`  ${props.msg}`}
       </div>
   )
 }
