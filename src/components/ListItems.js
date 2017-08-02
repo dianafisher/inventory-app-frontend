@@ -34,7 +34,7 @@ class ListItems extends Component {
             </div>
           </div>
           <div className='col-md-9'>
-            <div className='row' id='Container'>
+            <div className='row' id='Container' style={styles.container}>
               {this.props.items.map((item) => (
                 <div className='col-lg-4 col-md-6 col-xs-12 mix laptop apple' style={styles.card} key={item.upc}>
                   <Item item={item}></Item>
@@ -50,6 +50,10 @@ class ListItems extends Component {
 }
 
 const styles = {
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
   card: {
     display: 'inline-block'
   }

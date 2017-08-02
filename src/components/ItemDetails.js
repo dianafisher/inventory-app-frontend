@@ -25,17 +25,21 @@ class ItemDetails extends Component {
     const details = this.state.details;
     console.log('details', details);
     return (
-
-      <div className='col-lg-4 col-md-6 col-xs-12 mix laptop apple'>
-        <div className='card ms-feature'>
-          <div className='card-block text-center'>
-            <img src={details.image} alt='product' className='img-responsive center-block'></img>
-            <h4 className='text-normal text-center'>{details.title}</h4>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-md-6'>
+            <div className='ms-carousel ms-carousel-thumb carousel'>
+              <div className='card card-block'>
+                <div className='carousel-inner'>
+                  <div className='item active'>
+                    <img src={details.image} alt='product' className='img-responsive center-block'></img>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <Link className='close' to='/items'>Close</Link>
       </div>
-
     )
   }
 }
