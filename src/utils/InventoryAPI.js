@@ -49,9 +49,8 @@ export const addItem = (item) => {
 
 export const upcLookup = (data) => {
   const token = loadJwtToken();
-  data.collection = 'items';
   console.log(data);
-  return axios.put(`${api}/upc`, data)
+  return axios.put(`${api}/upc?token=${token}`, data)
     .then(function(response){
       console.log(response);
     })

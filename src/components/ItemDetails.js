@@ -33,7 +33,7 @@ class ItemDetails extends Component {
             <h4 className='text-normal text-center'>{details.title}</h4>
           </div>
         </div>
-        <Link className='close' to='/'>Close</Link>
+        <Link className='close' to='/items'>Close</Link>
       </div>
 
     )

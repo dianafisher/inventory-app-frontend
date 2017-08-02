@@ -143,12 +143,23 @@ class App extends Component {
     )
   }
 
+  _renderItemDetails = (obj) => {
+    console.log(obj);
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <ItemDetails match={obj.match}></ItemDetails>
+      </div>
+    )
+  }
+
   render() {
     return (
       <Router>
         <div className="sb-site-container">
           <Route exact path='/' render={() => (
-            <Landing></Landing>
+            this.state.loggedIn ? ( <Redirect to='/items' />) :
+            ( <Landing></Landing> )
           )} />
           <Route exact path='/items' render={
             this._renderItems
@@ -159,7 +170,9 @@ class App extends Component {
           <Route path='/upc' render={( { history }) => (
             <UPCLookup onUPCLookup={this._upcLookup}></UPCLookup>
           )} />
-          <Route path='/item/:id' component={ItemDetails} />
+          <Route path='/item/:id' render={
+            this._renderItemDetails
+          } />
           <Route path='/login' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
             ( <Login onLoginUser={this._loginUser}></Login> )
