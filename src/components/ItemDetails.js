@@ -9,12 +9,12 @@ class ItemDetails extends Component {
   componentDidMount() {
     // get the item id from the match object params
     const itemId = this.props.match.params.id;
-
+    console.log('componentDidMount: itemId', itemId);
     // call the inventory api to get the item details
-    this.getItem(itemId);
+    this._getItem(itemId);
   }
 
-  getItem = (itemId) => {
+  _getItem = (itemId) => {
     InventoryAPI.getItem(itemId).then((item) => {
       console.log(item);
       this.setState( { details: item } );

@@ -30,13 +30,13 @@ export const getItems = () => {
 
 export const getItem = (itemId) => {
   const token = loadJwtToken();
-  return axios.get(`${api}/items/?{itemId}&token=${token}`)
+  return axios.get(`${api}/items/${itemId}?token=${token}`)
     .then(function(response) {
       console.log(response);
-      const data = response.data;
-      if (data.item) {
-        return data.item;
+      if (response.status !== 200) {
+        return {};
       }
+      return response.data;
     });
 }
 
