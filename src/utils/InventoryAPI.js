@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const api = "http://localhost:5000/api"; //"https://lego-inventory-app.herokuapp.com";
+// const api = "https://lego-inventory-app.herokuapp.com/api";
+const api = "http://localhost:5000/api";
 
 export const getItems = (token) => {
   return axios.get(`${api}/items?page=1&token=${token}`)
@@ -16,7 +17,7 @@ export const getItems = (token) => {
     });
 }
 
-export const getItem = (token, itemId) => {  
+export const getItem = (token, itemId) => {
   return axios.get(`${api}/items/?{itemId}&token=${token}`)
     .then(function(response) {
       console.log(response);
@@ -44,7 +45,7 @@ export const upcLookup = (token, data) => {
 }
 
 export const registerUser = (user) => {
-  return axios.post(`${api}/register`, user)
+  return axios.post(`${api}/users`, user)
     .then(function(response) {
       console.log(response);
     });

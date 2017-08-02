@@ -7,3 +7,10 @@ body {
 .alert {
   height: 74px;
 }
+
+.ms-hero-img-robots {
+  background-image: url(robots.jpg);
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat
+}

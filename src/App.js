@@ -12,6 +12,7 @@ import Alert from './components/Alert';
 import ItemDetails from './components/ItemDetails';
 import Login from './components/Login';
 import Register from './components/Register';
+import Landing from './components/Landing';
 
 class App extends Component {
 
@@ -138,19 +139,22 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Header user={this.state.user} onLogout={this.logout}/>
-          <NavBar />
-          { alerts && (
+          {/* <Header user={this.state.user} onLogout={this.logout}/>
+            <NavBar />
+            { alerts && (
             alerts.map((a, idx) => (
               <Alert
-                key={idx}
-                type={a.type}
-                msg={a.msg}
-                onCloseAlert={this.closeAlert.bind(this, idx)}
+            key={idx}
+            type={a.type}
+            msg={a.msg}
+            onCloseAlert={this.closeAlert.bind(this, idx)}
               ></Alert>
             ))
-          )}
+          )} */}
           <Route exact path='/' render={() => (
+            <Landing></Landing>
+          )} />
+          <Route exact path='/items' render={() => (
             <div className='row'>
               <ListItems items={this.state.items}></ListItems>
             </div>
