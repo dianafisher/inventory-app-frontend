@@ -5,15 +5,14 @@ import { Link } from 'react-router-dom';
 function Item (props) {
   console.log('props', props);
   return (
-    <div>
-      <div className='col-md-3'>
-        <Link className='thumbnail' to={`/item/${props.item.id}`}>
-          <div className='thumbnail-container'>
-            <img src={props.item.productImage} alt='product' className='img-responsive'></img>
-          </div>
-        </Link>
-      </div>
-    </div>
+      <div className='card ms-feature'>
+        <div className='card-block text-center'>
+          <Link to={`/item/${props.item.id}`}>
+            <img src={props.item.image} alt='product' className='img-responsive center-block'></img>
+          </Link>
+          <h4 className='text-normal text-center'>{props.item.title}</h4>
+        </div>
+      </div>  
   )
 }
 

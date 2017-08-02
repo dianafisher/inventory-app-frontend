@@ -23,13 +23,13 @@ class ItemDetails extends Component {
 
   render() {
     const details = this.state.details;
-
+    console.log('details', details);
     return (
 
       <div className='col-lg-4 col-md-6 col-xs-12 mix laptop apple'>
         <div className='card ms-feature'>
           <div className='card-block text-center'>
-            <img src={details.productImage} alt='product' className='img-responsive center-block'></img>
+            <img src={details.image} alt='product' className='img-responsive center-block'></img>
             <h4 className='text-normal text-center'>{details.title}</h4>
           </div>
         </div>

@@ -19,17 +19,15 @@ class App extends Component {
   state = {
     items: [],
     alerts: [],
-    token: '',
     user: null,
     loggedIn: false
   }
 
   componentDidMount() {
-    this.loadJwtToken();
-    this.getItems();
+    this._getItems();
   }
 
-  closeAlert(idx) {
+  _closeAlert(idx) {
 
     // remove the alert at this index
     let alerts = this.state.alerts.filter((a, index) => {
@@ -40,15 +38,14 @@ class App extends Component {
     this.setState({ alerts });
   }
 
-  getItems = () => {
-    const token = this.loadJwtToken();
-    InventoryAPI.getItems(token).then((items) => {
+  _getItems = () => {
+    InventoryAPI.getItems().then((items) => {
       console.log(items);
       this.setState({ items })
     });
   }
 
-  addItem = (item) => {
+  _addItem = (item) => {
     InventoryAPI.addItem(item)
     .then((item) => {
 
@@ -70,27 +67,12 @@ class App extends Component {
     });
   }
 
-  upcLookup = (upc) => {
-    const token = this.loadJwtToken();
-    InventoryAPI.upcLookup(token, upc).then((result) => {
+  _upcLookup = (upc) => {
+    InventoryAPI.upcLookup(upc).then((result) => {
     });
   }
 
-  loadJwtToken = () => {
-    const token = localStorage.getItem('jwt_token');
-    if (token.length > 0) {
-      const user = this.parseJwt(token);
-      this.setState({ token, user });
-    }
-  }
-
-  parseJwt = (token) => {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-  };
-
-  registerUser = (user) => {
+  _registerUser = (user) => {
     InventoryAPI.registerUser(user)
     .then((result) => {
       console.log(result);
@@ -110,70 +92,81 @@ class App extends Component {
     });
   }
 
-  loginUser = (user) => {
+  _loginUser = (user) => {
     InventoryAPI.login(user)
-      .then((result) => {
-        console.log(result);
-        const token = result.token;
-        const user = this.parseJwt(token);
-        console.log(token);
+      .then((response) => {
+        console.log(response);
+        const user = response.user;
         let alerts = [];
         alerts.push({
           type: 'success',
-          msg: result.message
+          msg: response.data.message
         });
-        this.setState({ alerts, token, user, loggedIn: true });
+        this.setState({ alerts, user, loggedIn: true });
       })
       .catch((error) => {
         console.log('error: ' + error);
       })
   }
 
-  logout = () => {
+  _logout = () => {
     InventoryAPI.logout();
-    this.setState({ token: '', user: null });
+    this.setState({ user: null });
+  }
+
+  _renderHeaderAndNavbar = () => {
+    let alerts = this.state.alerts;
+    return (
+      <div>
+        <Header user={this.state.user} onLogout={this.logout}/>
+        <NavBar />
+        { alerts && (
+          alerts.map((a, idx) => (
+            <Alert
+              key={idx}
+              type={a.type}
+              msg={a.msg}
+              onCloseAlert={this._closeAlert.bind(this, idx)}
+            ></Alert>
+          ))
+        )}
+      </div>
+    )
+  }
+
+  _renderItems = () => {
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <ListItems items={this.state.items}></ListItems>
+      </div>
+    )
   }
 
   render() {
-    let alerts = this.state.alerts;
-
     return (
       <Router>
-        <div className="App">
-          <Header user={this.state.user} onLogout={this.logout}/>
-          <NavBar />
-          { alerts && (
-            alerts.map((a, idx) => (
-              <Alert
-                key={idx}
-                type={a.type}
-                msg={a.msg}
-                onCloseAlert={this.closeAlert.bind(this, idx)}
-              ></Alert>
-            ))
-          )}
+        <div className="sb-site-container">
           <Route exact path='/' render={() => (
             <Landing></Landing>
           )} />
-          <Route exact path='/items' render={() => (
-            <div className='row'>
-              <ListItems items={this.state.items}></ListItems>
-            </div>
-          )} />
+          <Route exact path='/items' render={
+            this._renderItems
+          } />
           <Route path='/add' render={({ history }) => (
-            <AddItem onAddItem={this.addItem}></AddItem>
+            <AddItem onAddItem={this._addItem}></AddItem>
           )} />
           <Route path='/upc' render={( { history }) => (
-            <UPCLookup onUPCLookup={this.upcLookup}></UPCLookup>
+            <UPCLookup onUPCLookup={this._upcLookup}></UPCLookup>
           )} />
           <Route path='/item/:id' component={ItemDetails} />
           <Route path='/login' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
-            ( <Login onLoginUser={this.loginUser}></Login> )
+            ( <Login onLoginUser={this._loginUser}></Login> )
           )} />
           <Route path='/register' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
-            ( <Register onRegisterUser={this.registerUser}></Register> )
+            ( <Register onRegisterUser={this._registerUser}></Register> )
           )} />
         </div>
       </Router>
