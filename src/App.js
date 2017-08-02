@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Redirect } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import * as InventoryAPI from './utils/InventoryAPI';
@@ -20,7 +20,8 @@ class App extends Component {
     items: [],
     alerts: [],
     token: '',
-    user: null
+    user: null,
+    loggedIn: false
   }
 
   componentDidMount() {
@@ -121,7 +122,7 @@ class App extends Component {
           type: 'success',
           msg: result.message
         });
-        this.setState({ alerts, token, user });
+        this.setState({ alerts, token, user, loggedIn: true });
       })
       .catch((error) => {
         console.log('error: ' + error);
@@ -139,18 +140,18 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          {/* <Header user={this.state.user} onLogout={this.logout}/>
-            <NavBar />
-            { alerts && (
+          <Header user={this.state.user} onLogout={this.logout}/>
+          <NavBar />
+          { alerts && (
             alerts.map((a, idx) => (
               <Alert
-            key={idx}
-            type={a.type}
-            msg={a.msg}
-            onCloseAlert={this.closeAlert.bind(this, idx)}
+                key={idx}
+                type={a.type}
+                msg={a.msg}
+                onCloseAlert={this.closeAlert.bind(this, idx)}
               ></Alert>
             ))
-          )} */}
+          )}
           <Route exact path='/' render={() => (
             <Landing></Landing>
           )} />
@@ -167,10 +168,12 @@ class App extends Component {
           )} />
           <Route path='/item/:id' component={ItemDetails} />
           <Route path='/login' render={( { history }) => (
-            <Login onLoginUser={this.loginUser}></Login>
+            this.state.loggedIn ? ( <Redirect to="/items"/> ) :
+            ( <Login onLoginUser={this.loginUser}></Login> )
           )} />
           <Route path='/register' render={( { history }) => (
-            <Register onRegisterUser={this.registerUser}></Register>
+            this.state.loggedIn ? ( <Redirect to="/items"/> ) :
+            ( <Register onRegisterUser={this.registerUser}></Register> )
           )} />
         </div>
       </Router>
