@@ -17,10 +17,10 @@ function Landing (props) {
           </div>
           <div className="text-center mb-2">
             <Link className="btn btn-xlg btn-raised btn-primary" to='/login'>
-              <i className="fa fa-rocket"></i>Login
+              <i className="zmdi zmdi-account"></i>Login
             </Link>
             <Link className="btn btn-xlg btn-raised btn-warning" to='/register'>
-              <i className="fa fa-rocket"></i>Create Account
+              <i className="zmdi zmdi-account-add"></i>Create Account
             </Link>
           </div>
         </div>

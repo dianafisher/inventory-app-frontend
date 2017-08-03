@@ -25,7 +25,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this._getItems();
+    console.log('App componentDidMount');
+    // load the JWT token to see if we have a user logged in
+    
   }
 
   _closeAlert(idx) {
@@ -69,8 +71,13 @@ class App extends Component {
   }
 
   _upcLookup = (upc) => {
-    InventoryAPI.upcLookup(upc).then((result) => {
-    });
+    InventoryAPI.upcLookup(upc)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log('error ' + error);
+      })
   }
 
   _registerUser = (user) => {
@@ -139,7 +146,7 @@ class App extends Component {
     return (
       <div>
         <Header user={this.state.user} isLoggedIn={this.state.loggedIn} onLogout={this.logout}/>
-        <NavBar />
+        {/* <NavBar /> */}
         { alerts && (
           alerts.map((a, idx) => (
             <Alert
@@ -192,7 +199,7 @@ class App extends Component {
             ( <Landing></Landing> )
           )} />
           <Route exact path='/items' render={
-            this._renderItems
+              this._renderItems
           } />
           <Route path='/add' render={({ history }) => (
             <AddItem onAddItem={this._addItem}></AddItem>
@@ -201,14 +208,14 @@ class App extends Component {
             <UPCLookup onUPCLookup={this._upcLookup}></UPCLookup>
           )} />
           <Route path='/item/:id' render={
-            this._renderItemDetails
+              this._renderItemDetails
           } />
           <Route path='/login' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
             ( <Login onLoginUser={this._loginUser}></Login> )
           )} />
           <Route path='/logout' render={
-            this._renderLogout
+              this._renderLogout
           } />
           <Route path='/register' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
