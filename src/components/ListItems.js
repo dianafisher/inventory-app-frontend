@@ -58,4 +58,5 @@ const styles = {
     display: 'inline-block'
   }
 }
+
 export default ListItems;

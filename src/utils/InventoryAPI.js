@@ -61,9 +61,10 @@ export const registerUser = (user) => {
     .then(function(response) {
       let token = response.data.token;
       localStorage.setItem('jwt_token', token);
-      const data = parseJwt(token);
-      console.log(data);
+      const userData = parseJwt(token);
+      response.user = userData;
       console.log(response);
+      return response;
     });
 }
 
@@ -82,5 +83,8 @@ export const login = (user) => {
 export const logout = () => {
   // clear the jwt token from localStorage
   localStorage.setItem('jwt_token', '');
-  return axios.get(`${api}/logout`);
+  return axios.get(`${api}/logout`)
+    .then(function(response) {
+      return response;
+    });
 }

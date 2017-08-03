@@ -11,6 +11,7 @@ import UPCLookup from './components/UPCLookup';
 import Alert from './components/Alert';
 import ItemDetails from './components/ItemDetails';
 import Login from './components/Login';
+import Logout from './components/Logout';
 import Register from './components/Register';
 import Landing from './components/Landing';
 
@@ -74,8 +75,15 @@ class App extends Component {
 
   _registerUser = (user) => {
     InventoryAPI.registerUser(user)
-    .then((result) => {
-      console.log(result);
+    .then((response) => {
+      console.log(response);
+      const user = response.user;
+      let alerts = [];
+      alerts.push({
+        type: 'success',
+        msg: response.data.message
+      });
+      this.setState({ alerts, user, loggedIn: true });
     })
     .catch((error) => {
       console.log('error: ' + error);
@@ -110,15 +118,27 @@ class App extends Component {
   }
 
   _logout = () => {
-    InventoryAPI.logout();
-    this.setState({ user: null });
+    InventoryAPI.logout()
+      .then((response) => {
+        console.log(response);
+        let alerts = [];
+        // alerts.push({
+        //   type: 'success',
+        //   msg: response.data.message
+        // });
+        this.setState({ alerts, user: null, loggedIn: false });
+      })
+      .catch((error) => {
+        console.log('error: ' + error);
+      })
+
   }
 
   _renderHeaderAndNavbar = () => {
     let alerts = this.state.alerts;
     return (
       <div>
-        <Header user={this.state.user} onLogout={this.logout}/>
+        <Header user={this.state.user} isLoggedIn={this.state.loggedIn} onLogout={this.logout}/>
         <NavBar />
         { alerts && (
           alerts.map((a, idx) => (
@@ -153,6 +173,16 @@ class App extends Component {
     )
   }
 
+  _renderLogout = () => {
+    // render the logout page
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <Logout onLogout={this._logout}/>
+      </div>
+    )
+  }
+
   render() {
     return (
       <Router>
@@ -177,6 +207,9 @@ class App extends Component {
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
             ( <Login onLoginUser={this._loginUser}></Login> )
           )} />
+          <Route path='/logout' render={
+            this._renderLogout
+          } />
           <Route path='/register' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
             ( <Register onRegisterUser={this._registerUser}></Register> )

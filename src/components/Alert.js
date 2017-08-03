@@ -27,7 +27,7 @@ function Alert (props) {
         </button>
         <strong>
           <i className={iconClassName}></i>
-          {text}
+          {/* {text} */}
         </strong>
         {`  ${props.msg}`}
       </div>

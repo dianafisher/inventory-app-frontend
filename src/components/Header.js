@@ -1,50 +1,64 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-// Header is a stateless functional component
-function Header (props) {
-  return (
-    <header className='ms-header ms-header-primary'>
-      <div className='container container-full'>
-        <div className='ms-title'>
-          <a href='index.html'>
-            <span className='ms-logo animated zoomInDown animation-delay-5'>I</span>
-            <h1 className='animated fadeInRight animation-delay-6'>Inventory
-              <span>App</span>
-            </h1>
-          </a>
+class Header extends Component {
+
+  render() {
+    const loggedIn = this.props.isLoggedIn;
+    return (
+      <header className='ms-header ms-header-primary'>
+        <div className='container container-full'>
+          <div className='ms-title'>
+            <Link to='/'>
+              <span className='ms-logo animated zoomInDown animation-delay-5'>I</span>
+              <h1 className='animated fadeInRight animation-delay-6'>Inventory
+                <span>App</span>
+              </h1>
+            </Link>
+          </div>
+          <div className='header-right'>
+            {!loggedIn &&
+              <div>
+                <Link
+                  className='btn-circle btn-circle-primary no-focus animated zoomInDown animation-delay-4'
+                  to='/login'
+                >
+                  <i className="zmdi zmdi-account"></i>
+                </Link>
+                <Link
+                  className='btn-circle btn-circle-primary no-focus animated zoomInDown animation-delay-4'
+                  to='/register'
+                >
+                  <i className="zmdi zmdi-account-add"></i>
+                </Link>
+              </div>
+            }
+
+            { this.props.user !== null &&
+              <div className='row'>
+                Logged in as { this.props.user.name }
+                <Link
+                  className='btn-circle btn-circle-primary no-focus animated zoomInDown animation-delay-4'
+                  style={styles.logout}
+                  to="/logout"
+                >
+                  <i className="fa fa-sign-out" aria-hidden="true"></i>
+                </Link>
+              </div>
+            }
+          </div>
+
+
         </div>
-        <div className='header-right'>
-          <Link
-            className='btn-circle btn-circle-primary no-focus animated zoomInDown animation-delay-4'
-            to='/login'
-          >
-            <i className="zmdi zmdi-account"></i>
-          </Link>
+      </header>
+    )
+  }
+}
 
-          <Link
-            className='btn-circle btn-circle-primary no-focus animated zoomInDown animation-delay-4'
-            to='/register'
-          >
-            <i className="zmdi zmdi-account-add"></i>
-          </Link>
-          { props.user !== null &&
-            <div className='row'>
-              Logged in as { props.user.name }
-              <button className='btn btn-raised color-primary btn-white' onClick={props.onLogout}>
-                Logout <i className="fa fa-sign-out" aria-hidden="true"></i>
-              </button>
-              {/* <button className='btn-circle btn-circle-raised btn-circle-white btn-circle-primary'>
-                <i className="fa fa-sign-out" aria-hidden="true"></i>
-              </button> */}
-            </div>
-          }
-        </div>
-
-
-      </div>
-    </header>
-  )
+const styles = {
+  logout: {
+    marginLeft: '10px'
+  },
 }
 
 export default Header;
