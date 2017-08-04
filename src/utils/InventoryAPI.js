@@ -9,14 +9,13 @@ export const getItems = (token, pageNumber) => {
   return axios.get(`${api}/items?page=${pageNumber}&token=${token}`)
     .then(function(response) {
       console.log(response);
-      const data = response.data;
-      if (data.items) {
-        return data.items;
-      } else {
-        console.log(data.error);
-        return [];
-      }
-    });
+      return response;
+    })
+    .catch(err => {
+      console.log(err);
+      console.log(err.response);
+      return err.response;
+    })
 }
 
 export const getItem = (itemId, token) => {
@@ -34,6 +33,16 @@ export const addItem = (item) => {
   return axios.post(`${api}/items`, item)
     .then(function(response) {
       console.log(response);
+    })
+}
+
+export const editItem = (itemId, token, data) => {
+  return axios.put(`${api}/items/%{itemId}?token=${token}`, data)
+    .then(function(response) {
+      console.log(response);
+    })
+    .catch(err => {
+      console.log('error', err);
     })
 }
 

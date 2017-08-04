@@ -10,6 +10,7 @@ import AddItem from './components/AddItem';
 import UPCLookup from './components/UPCLookup';
 import Alert from './components/Alert';
 import ItemDetails from './components/ItemDetails';
+import EditItem from './components/EditItem';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
@@ -31,25 +32,34 @@ function saveJwtToken(token) {
 
 class App extends Component {
 
-  state = {
-    alerts: [],
-    token: '',
-    user: null,
-    loggedIn: false
+  constructor(props) {
+    super(props);
+    console.log('App constructor');
+
+    this._initializeState();
+  }
+
+  _initializeState = () => {
+    // load the JWT token to see if we have a user logged in
+    const token = loadJwtToken();
+    console.log('token:', token);
+    let user;
+    let loggedIn = false;
+    if (token) {
+      user = parseJwt(token);
+      loggedIn = true
+    }
+    this.state = {
+      alerts: [],
+      token: token,
+      items: [],
+      user: user,
+      loggedIn: loggedIn
+    }
   }
 
   componentDidMount() {
     console.log('App componentDidMount');
-    // load the JWT token to see if we have a user logged in
-    const token = loadJwtToken();
-    console.log('token:', token);
-    if (token) {
-      const user = parseJwt(token);
-      console.log(user);
-      if (user) {
-        this.setState({ token, user, loggedIn: true });
-      }
-    }
   }
 
   _closeAlert(idx) {
@@ -164,8 +174,52 @@ class App extends Component {
       .catch((error) => {
         console.log('error: ' + error);
       })
-
   }
+
+  _getItem = (itemId) => {
+    const token = this.state.token;
+    InventoryAPI.getItem(itemId, token)
+      .then((item) => {
+        console.log(item);
+        this.setState( { item } );
+      })
+      .catch(error => {
+        console.log('error:' + error);
+      });
+  }
+
+  _getItems = () => {
+    // get the token from our state
+    const token = this.state.token;
+    console.log('_getItems, token:', token);
+    InventoryAPI.getItems(token, 1)
+      .then((response) => {
+        if (response.status === 403) {
+          // need to log in again..
+          this._showAuthenticationAlert();
+        } else {
+          const data = response.data;
+          console.log(data);
+          const items = response.data.items;
+          console.log(items);
+          this.setState({ items })
+        }
+
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
+  _showAuthenticationAlert = () => {
+    let alerts = [];
+    alerts.push({
+      type: 'error',
+      msg: 'Please login again'
+    });
+    this.setState({ alerts, user: null, loggedIn: false, token: '' });
+  }
+
 
   _renderHeaderAndNavbar = () => {
     let alerts = this.state.alerts;
@@ -191,7 +245,7 @@ class App extends Component {
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <ListItems token={this.state.token}></ListItems>
+        <ListItems getItems={this._getItems} items={this.state.items}></ListItems>
       </div>
     )
   }
@@ -225,6 +279,16 @@ class App extends Component {
     )
   }
 
+  _renderEditItem = (obj) => {
+    console.log(obj);
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <EditItem match={obj.match} token={this.state.token}></EditItem>
+      </div>
+    )
+  }
+
   render() {
     return (
       <Router>
@@ -244,6 +308,9 @@ class App extends Component {
           } />
           <Route path='/item/:id' render={
               this._renderItemDetails
+          } />
+          <Route path='/edit/:id' render={
+              this._renderEditItem
           } />
           <Route path='/login' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
