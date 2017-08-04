@@ -9,27 +9,27 @@ function NavBar (props) {
         <div className='navbar-header'>
           <div className='navbar-collapse collapse'>
             <ul className='nav navbar-nav'>
-              <li className='dropdown active'>
-                <Link
-                  to='/'
+              {/* <li className='dropdown active'> */}
+                {/* <Link
+                  to='/items'
                   className='dropdown-toggle animated fadeIn animation-delay-4'
                   data-toggle='dropdown'
                   data-hover='dropdown'
                   data-name='home'
-                >Home</Link>
+                  >My Items</Link>
 
-              </li>
-              <li className='dropdown'>
-                <Link
+                  </li>
+                  <li className='dropdown'>
+                  <Link
                   to='/add'
                   className='dropdown-toggle animated fadeIn animation-delay-4'
                   data-toggle='dropdown'
                   data-hover='dropdown'
                   data-name='add'
-                >
+                  >
                   Add Item
-                </Link>
-              </li>
+                  </Link>
+                </li> */}
               <li className='dropdown'>
                 <Link
                   to='/upc'

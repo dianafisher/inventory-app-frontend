@@ -15,11 +15,25 @@ import Logout from './components/Logout';
 import Register from './components/Register';
 import Landing from './components/Landing';
 
+function parseJwt(token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(window.atob(base64));
+}
+
+function loadJwtToken() {
+  return localStorage.getItem('jwt_token');
+}
+
+function saveJwtToken(token) {
+  localStorage.setItem('jwt_token', token);
+}
+
 class App extends Component {
 
   state = {
-    items: [],
     alerts: [],
+    token: '',
     user: null,
     loggedIn: false
   }
@@ -27,7 +41,15 @@ class App extends Component {
   componentDidMount() {
     console.log('App componentDidMount');
     // load the JWT token to see if we have a user logged in
-    
+    const token = loadJwtToken();
+    console.log('token:', token);
+    if (token) {
+      const user = parseJwt(token);
+      console.log(user);
+      if (user) {
+        this.setState({ token, user, loggedIn: true });
+      }
+    }
   }
 
   _closeAlert(idx) {
@@ -41,12 +63,6 @@ class App extends Component {
     this.setState({ alerts });
   }
 
-  _getItems = () => {
-    InventoryAPI.getItems().then((items) => {
-      console.log(items);
-      this.setState({ items })
-    });
-  }
 
   _addItem = (item) => {
     InventoryAPI.addItem(item)
@@ -71,9 +87,11 @@ class App extends Component {
   }
 
   _upcLookup = (upc) => {
-    InventoryAPI.upcLookup(upc)
+    const token = this.state.token;
+    InventoryAPI.upcLookup(upc, token)
       .then((response) => {
         console.log(response);
+        // redirect to item details?
       })
       .catch((error) => {
         console.log('error ' + error);
@@ -111,7 +129,12 @@ class App extends Component {
     InventoryAPI.login(user)
       .then((response) => {
         console.log(response);
-        const user = response.user;
+        const token = response.data.token;
+        // save the token to local storage
+        saveJwtToken(token);
+
+        // parse the user from the token
+        const user = parseJwt(token);
         let alerts = [];
         alerts.push({
           type: 'success',
@@ -125,6 +148,9 @@ class App extends Component {
   }
 
   _logout = () => {
+    // clear the JWT token
+    saveJwtToken('');
+
     InventoryAPI.logout()
       .then((response) => {
         console.log(response);
@@ -133,7 +159,7 @@ class App extends Component {
         //   type: 'success',
         //   msg: response.data.message
         // });
-        this.setState({ alerts, user: null, loggedIn: false });
+        this.setState({ alerts, user: null, loggedIn: false, token: '' });
       })
       .catch((error) => {
         console.log('error: ' + error);
@@ -146,7 +172,7 @@ class App extends Component {
     return (
       <div>
         <Header user={this.state.user} isLoggedIn={this.state.loggedIn} onLogout={this.logout}/>
-        {/* <NavBar /> */}
+        <NavBar />
         { alerts && (
           alerts.map((a, idx) => (
             <Alert
@@ -165,7 +191,7 @@ class App extends Component {
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <ListItems items={this.state.items}></ListItems>
+        <ListItems token={this.state.token}></ListItems>
       </div>
     )
   }
@@ -175,7 +201,7 @@ class App extends Component {
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <ItemDetails match={obj.match}></ItemDetails>
+        <ItemDetails match={obj.match} token={this.state.token}></ItemDetails>
       </div>
     )
   }
@@ -186,6 +212,15 @@ class App extends Component {
       <div>
         {this._renderHeaderAndNavbar()}
         <Logout onLogout={this._logout}/>
+      </div>
+    )
+  }
+
+  _renderUPCLookup = () => {
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <UPCLookup onUPCLookup={this._upcLookup}></UPCLookup>
       </div>
     )
   }
@@ -204,9 +239,9 @@ class App extends Component {
           <Route path='/add' render={({ history }) => (
             <AddItem onAddItem={this._addItem}></AddItem>
           )} />
-          <Route path='/upc' render={( { history }) => (
-            <UPCLookup onUPCLookup={this._upcLookup}></UPCLookup>
-          )} />
+          <Route path='/upc' render={
+            this._renderUPCLookup
+          } />
           <Route path='/item/:id' render={
               this._renderItemDetails
           } />

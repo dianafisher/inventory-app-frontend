@@ -1,8 +1,35 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Item from './Item';
+import * as InventoryAPI from '../utils/InventoryAPI';
 
 class ListItems extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+      pageNumber: 1
+    };
+  }
+
+
+
+  _getItems = (pageNumber) => {
+    // get the token from our state
+    console.log('_getItems, props', this.props);
+    const token = this.props.token;
+    console.log('_getItems, token:', token);
+    InventoryAPI.getItems(token, pageNumber).then((items) => {
+      console.log(items);
+      this.setState({ items })
+    });
+  }
+
+
+  componentDidMount() {
+    this._getItems(this.state.pageNumber);
+  }
 
   _renderItems = (items) => {
     return (
@@ -52,12 +79,12 @@ class ListItems extends Component {
   }
 
   render() {
-    const items = this.props.items;
+    const items = this.state.items;
     console.log('items', items);
     let div = null;
     if (items.length > 0) {
       div = this._renderItems(items)
-    } else {      
+    } else {
       div = <div>Nothing to see here</div>
     }
     return (
@@ -80,7 +107,7 @@ const styles = {
 }
 
 ListItems.propTypes = {
-  items: PropTypes.array.isRequired
+  token: PropTypes.string.isRequired
 }
 
 export default ListItems;
