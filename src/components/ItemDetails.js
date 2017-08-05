@@ -2,41 +2,45 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import serializeForm from 'form-serialize';
-import * as InventoryAPI from '../utils/InventoryAPI';
 
 class ItemDetails extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      details: {},
-      token: props.token,
       isEditing: false,
-      title: '',
-      description: '',
-      imageURL: '',
+      title: props.item.title,
+      description: props.item.description,
+      imageURL: props.item.image,
+      brand: props.item.brand,
+      model: props.item.model,
+      count: props.item.count
     };
   }
 
   componentDidMount() {
     console.log('ItemDetails componentDidMount');
     // get the item id from the match object params
-    const itemId = this.props.match.params.id;
+    const itemId = this.props.id;
     console.log('componentDidMount: itemId', itemId);
-    // call the inventory api to get the item details
-    this._getItem(itemId);
+    console.log(this.props);
+    this.props.getItem(itemId);
+    // // call the inventory api to get the item details
+    // this._getItem(itemId);
   }
 
-  _getItem = (itemId) => {
-    const token = this.state.token;
-    InventoryAPI.getItem(itemId, token).then((item) => {
-      console.log(item);
-      this.setState( {
-        details: item,
-        title: item.title,
-        description: item.description,
-      } );
-    });
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
+    console.log(nextProps.item);
+    this.setState( {
+      title: nextProps.item.title,
+      description: nextProps.item.description,
+      imageURL: '',
+      brand: nextProps.item.brand,
+      model: nextProps.item.model,
+      count: nextProps.item.count
+    } )
   }
 
   _handleSubmit = (e) => {
@@ -51,9 +55,12 @@ class ItemDetails extends Component {
     console.log(target.type);
     const name = target.name;
     console.log(name);
+
+    this.setState( {[name]: e.target.value} );
+
   }
 
-  _onClick = (e) => {
+  _onEditClick = (e) => {
     console.log(e.target.name + ' clicked');
     if (e.target.name === 'editButton') {
       // toggle edit form visibility
@@ -62,10 +69,15 @@ class ItemDetails extends Component {
     }
   }
 
+  _onCancelEdit = (e) => {
+    const editing = this.state.isEditing;
+    this.setState( {isEditing: !editing} );
+  }
+
   _renderEditForm = () => {
     return (
-      <div className="card card-primary">
-        <div className="card-block">
+      <div className="card card-block">
+        <div className="carousel-inner">
           <form className="form-horizontal" onSubmit={this.handleSubmit}>
             <fieldset>
               <div className="form-group">
@@ -77,8 +89,8 @@ class ItemDetails extends Component {
                     id="inputTitle"
                     placeholder="Title"
                     value={this.state.title}
-                    name='email'
-                    onChange={this.handleInputChange}
+                    name='title'
+                    onChange={this._handleInputChange}
                   />
                 </div>
               </div>
@@ -86,36 +98,83 @@ class ItemDetails extends Component {
                 <label htmlFor="inputName" className="col-md-2 control-label">Description</label>
                 <div className="col-md-9">
                   <textarea
-                    type="text"
+                    style={styles.description}
                     className="form-control"
-                    id="inputName"
+                    id="inputDescription"
                     placeholder="Description"
                     value={this.state.description}
-                    name='name'
-                    onChange={this.handleInputChange}
+                    name='description'
+                    onChange={this._handleInputChange}
                   />
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="inputPassword" className="col-md-2 control-label">Password</label>
+                <label htmlFor="inputBrand" className="col-md-2 control-label">Brand</label>
                 <div className="col-md-9">
                   <input
-                    type="password"
+                    type="text"
                     className="form-control"
-                    id="inputPassword"
-                    placeholder="Password"
-                    name='password'
-                    onChange={this.handleInputChange}
+                    id="inputBrand"
+                    placeholder="Brand"
+                    value={this.state.brand}
+                    name='brand'
+                    onChange={this._handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="inputModel" className="col-md-2 control-label">Model</label>
+                <div className="col-md-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputModel"
+                    placeholder="Model"
+                    value={this.state.model}
+                    name='model'
+                    onChange={this._handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="inputCount" className="col-md-2 control-label">Count</label>
+                <div className="col-md-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputCount"
+                    placeholder="Count"
+                    value={this.state.count}
+                    name='count'
+                    onChange={this._handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="inputImage" className="col-md-2 control-label">Image</label>
+                <div className="col-md-9">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputImage"
+                    placeholder="Image URL"
+                    value={this.state.imageURL}
+                    name='imageURL'
+                    onChange={this._handleInputChange}
                   />
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-4 col-md-offset-8">
-                  <button
-                    className="btn btn-raised btn-primary btn-block mt-4"
-                    type='submit'
-                  >Register Now</button>
-                </div>
+                <button
+                  className="btn btn-primary btn-block btn-raised mt-2 no-mb"
+                  type='submit'
+                >Save Changes
+                </button>
+                <button
+                  className="btn btn-primary btn-block btn-raised mt-2 no-mb"
+                  onClick={this._onCancelEdit}
+                >Cancel
+                </button>
               </div>
             </fieldset>
           </form>
@@ -124,11 +183,41 @@ class ItemDetails extends Component {
     )
   }
 
-  render() {
-    const details = this.state.details;
+  _renderDetails = () => {
+    const details = this.props.item;
     console.log('details', details);
-    const isEditing = this.state.isEditing;
 
+    return (
+      <div className='card'>
+        <div className='card-block'>
+          <h2>{details.title}</h2>
+          <p className='lead'>{details.description}</p>
+          <ul className='list-unstyled'>
+            <li><strong>Brand: </strong>{details.brand}</li>
+            <li><strong>Model: </strong>{details.model}</li>
+            <li><strong>UPC: </strong>{details.upc}</li>
+            <li><strong>Count: </strong>{details.count}</li>
+          </ul>
+          <button
+            className="btn btn-primary btn-block btn-raised mt-2 no-mb"
+            onClick={this._onEditClick}
+            name='editButton'
+          >Edit Item</button>
+          {/* <Link
+            to={`/edit/${details._id}`}
+            className='btn btn-primary btn-block btn-raised mt-2 no-mb'
+          >Edit Item</Link> */}
+        </div>
+      </div>
+    )
+  }
+
+  render() {
+
+    const isEditing = this.state.isEditing;
+    const details = this.props.item;
+    console.log('details', details);
+    let imageURL = this.state.imageURL || details.image;
     return (
       <div className='container'>
         <div className='row'>
@@ -137,35 +226,14 @@ class ItemDetails extends Component {
               <div className='card card-block'>
                 <div className='carousel-inner'>
                   <div className='item active'>
-                    <img src={details.image} alt='product' className='img-responsive center-block'></img>
+                    <img src={imageURL} alt='product' className='img-responsive center-block'></img>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className='col-md-6'>
-            { isEditing ? this._renderEditForm() : ''}
-            <div className='card'>
-              <div className='card-block'>
-                <h2>{details.title}</h2>
-                <p className='lead'>{details.description}</p>
-                <ul className='list-unstyled'>
-                  <li><strong>Brand: </strong>{details.brand}</li>
-                  <li><strong>Model: </strong>{details.model}</li>
-                  <li><strong>UPC: </strong>{details.upc}</li>
-                  <li><strong>Count: </strong>{details.count}</li>
-                </ul>
-                <button
-                  className="btn btn-primary btn-block btn-raised mt-2 no-mb"
-                  onClick={this._onClick}
-                  name='editButton'
-                >Edit Item</button>
-                {/* <Link
-                  to={`/edit/${details._id}`}
-                  className='btn btn-primary btn-block btn-raised mt-2 no-mb'
-                >Edit Item</Link> */}
-              </div>
-            </div>
+            { isEditing ? this._renderEditForm() : this._renderDetails() }
           </div>
         </div>
       </div>
@@ -174,7 +242,14 @@ class ItemDetails extends Component {
 }
 
 ItemDetails.propTypes = {
-  token: PropTypes.string.isRequired
+  item: PropTypes.object.isRequired
+}
+
+const styles = {
+  description: {
+    minHeight: '250px'
+  },
+
 }
 
 export default ItemDetails;

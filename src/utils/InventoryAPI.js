@@ -22,11 +22,13 @@ export const getItem = (itemId, token) => {
   return axios.get(`${api}/items/${itemId}?token=${token}`)
     .then(function(response) {
       console.log(response);
-      if (response.status !== 200) {
-        return {};
-      }
-      return response.data;
-    });
+      return response;
+    })
+    .catch(err => {
+      console.log(err);
+      console.log(err.response);
+      return err.response;
+    })
 }
 
 export const addItem = (item) => {

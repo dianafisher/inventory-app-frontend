@@ -6,8 +6,12 @@ class ListItems extends Component {
 
   componentDidMount() {
     console.log('ListItems componentDidMount');
-    console.log(this.props);
+    console.log('props', this.props);
     this.props.getItems();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps', nextProps);    
   }
 
   _renderItems = (items) => {

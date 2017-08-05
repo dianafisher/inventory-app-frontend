@@ -10,7 +10,6 @@ import AddItem from './components/AddItem';
 import UPCLookup from './components/UPCLookup';
 import Alert from './components/Alert';
 import ItemDetails from './components/ItemDetails';
-import EditItem from './components/EditItem';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
@@ -53,6 +52,7 @@ class App extends Component {
       alerts: [],
       token: token,
       items: [],
+      item: {},
       user: user,
       loggedIn: loggedIn
     }
@@ -179,9 +179,14 @@ class App extends Component {
   _getItem = (itemId) => {
     const token = this.state.token;
     InventoryAPI.getItem(itemId, token)
-      .then((item) => {
-        console.log(item);
-        this.setState( { item } );
+      .then((response) => {
+        if (response.status === 403) {
+          this._showAuthenticationAlert();
+        } else {
+          const item = response.data;
+          console.log(item);
+          this.setState( { item } );
+        }
       })
       .catch(error => {
         console.log('error:' + error);
@@ -220,7 +225,6 @@ class App extends Component {
     this.setState({ alerts, user: null, loggedIn: false, token: '' });
   }
 
-
   _renderHeaderAndNavbar = () => {
     let alerts = this.state.alerts;
     return (
@@ -255,7 +259,7 @@ class App extends Component {
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <ItemDetails match={obj.match} token={this.state.token}></ItemDetails>
+        <ItemDetails id={obj.match.params.id} getItem={this._getItem} item={this.state.item}></ItemDetails>
       </div>
     )
   }
@@ -279,16 +283,6 @@ class App extends Component {
     )
   }
 
-  _renderEditItem = (obj) => {
-    console.log(obj);
-    return (
-      <div>
-        {this._renderHeaderAndNavbar()}
-        <EditItem match={obj.match} token={this.state.token}></EditItem>
-      </div>
-    )
-  }
-
   render() {
     return (
       <Router>
@@ -308,9 +302,6 @@ class App extends Component {
           } />
           <Route path='/item/:id' render={
               this._renderItemDetails
-          } />
-          <Route path='/edit/:id' render={
-              this._renderEditItem
           } />
           <Route path='/login' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
