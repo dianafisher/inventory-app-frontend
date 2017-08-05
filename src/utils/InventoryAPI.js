@@ -49,6 +49,17 @@ export const editItem = (itemId, token, data) => {
     })
 }
 
+export const deleteItem = (itemId, token) => {
+  return axios.delete(`${api}/items/${itemId}?token=${token}`)
+    .then(function(response) {
+      console.log(response);
+      return response;
+    })
+    .catch(err => {
+      console.log('error', err);
+    })
+}
+
 export const upcLookup = (data, token) => {
   return axios.put(`${api}/upc?token=${token}`, data)
     .then(function(response){

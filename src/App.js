@@ -107,6 +107,17 @@ class App extends Component {
       })
   }
 
+  _deleteItem = (itemId) => {
+    const token = this.state.token;
+    InventoryAPI.deleteItem(itemId, token)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log('error ' + error);
+      })
+  }
+
   _upcLookup = (upc) => {
     const token = this.state.token;
     InventoryAPI.upcLookup(upc, token)
@@ -275,6 +286,7 @@ class App extends Component {
           getItem={this._getItem}
           item={this.state.item}
           editItem={this._editItem}
+          deleteItem={this._deleteItem}
         ></ItemDetails>
       </div>
     )

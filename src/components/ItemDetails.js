@@ -69,6 +69,10 @@ class ItemDetails extends Component {
     }
   }
 
+  _onDeleteClick = (e) => {
+    this.props.deleteItem(this.props.id);
+  }
+
   _onCancelEdit = (e) => {
     const editing = this.state.isEditing;
     this.setState( {isEditing: !editing} );
@@ -203,6 +207,11 @@ class ItemDetails extends Component {
             onClick={this._onEditClick}
             name='editButton'
           >Edit Item</button>
+          <button
+            className="btn btn-danger btn-block btn-raised mt-2 no-mb"
+            onClick={this._onDeleteClick}
+            name='deleteButton'
+          >Delete Item</button>
           {/* <Link
             to={`/edit/${details._id}`}
             className='btn btn-primary btn-block btn-raised mt-2 no-mb'
