@@ -11,7 +11,7 @@ class ListItems extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);    
+    console.log('componentWillReceiveProps', nextProps);
   }
 
   _renderItems = (items) => {

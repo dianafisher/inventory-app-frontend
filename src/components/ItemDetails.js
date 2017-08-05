@@ -226,7 +226,12 @@ class ItemDetails extends Component {
               <div className='card card-block'>
                 <div className='carousel-inner'>
                   <div className='item active'>
-                    <img src={imageURL} alt='product' className='img-responsive center-block'></img>
+                    <img
+                      src={imageURL}
+                      alt='product'
+                      className='img-responsive center-block'
+                      style={styles.itemImage}
+                    ></img>
                   </div>
                 </div>
               </div>
@@ -249,7 +254,10 @@ const styles = {
   description: {
     minHeight: '250px'
   },
-
+  itemImage: {
+    maxHeight: 480,
+    maxWidth: 480
+  }
 }
 
 export default ItemDetails;
