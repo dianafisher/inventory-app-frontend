@@ -1,45 +1,36 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 // Header is a stateless functional component
 function NavBar (props) {
+  console.log(props);
   return (
     <nav className='navbar navbar-static-top yamm ms-navbar ms-navbar-primary'>
       <div className='container container-full'>
         <div className='navbar-header'>
           <div className='navbar-collapse collapse'>
             <ul className='nav navbar-nav'>
-              {/* <li className='dropdown active'> */}
-                {/* <Link
+              <li>
+                <NavLink
+                  activeClassName='active'
                   to='/items'
-                  className='dropdown-toggle animated fadeIn animation-delay-4'
+                  className='dropdown-toggle navlink'
                   data-toggle='dropdown'
                   data-hover='dropdown'
                   data-name='home'
-                  >My Items</Link>
-
-                  </li>
-                  <li className='dropdown'>
-                  <Link
-                  to='/add'
-                  className='dropdown-toggle animated fadeIn animation-delay-4'
-                  data-toggle='dropdown'
-                  data-hover='dropdown'
-                  data-name='add'
-                  >
-                  Add Item
-                  </Link>
-                </li> */}
-              <li className='dropdown'>
-                <Link
+                >My Items
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to='/upc'
-                  className='dropdown-toggle animated fadeIn animation-delay-4'
+                  className='dropdown-toggle navlink'
                   data-toggle='dropdown'
                   data-hover='dropdown'
                   data-name='add'
                 >
-                  UPC Lookup
-                </Link>
+                  Add Item
+                </NavLink>
               </li>
             </ul>
           </div>

@@ -96,6 +96,17 @@ class App extends Component {
     });
   }
 
+  _editItem = (itemId, data) => {
+    const token = this.state.token;
+    InventoryAPI.editItem(itemId, token, data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log('error ' + error);
+      })
+  }
+
   _upcLookup = (upc) => {
     const token = this.state.token;
     InventoryAPI.upcLookup(upc, token)
@@ -259,7 +270,12 @@ class App extends Component {
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <ItemDetails id={obj.match.params.id} getItem={this._getItem} item={this.state.item}></ItemDetails>
+        <ItemDetails
+          id={obj.match.params.id}
+          getItem={this._getItem}
+          item={this.state.item}
+          editItem={this._editItem}
+        ></ItemDetails>
       </div>
     )
   }

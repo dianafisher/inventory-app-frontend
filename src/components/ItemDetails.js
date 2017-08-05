@@ -12,7 +12,7 @@ class ItemDetails extends Component {
       isEditing: false,
       title: props.item.title,
       description: props.item.description,
-      imageURL: props.item.image,
+      image: props.item.image,
       brand: props.item.brand,
       model: props.item.model,
       count: props.item.count
@@ -36,7 +36,7 @@ class ItemDetails extends Component {
     this.setState( {
       title: nextProps.item.title,
       description: nextProps.item.description,
-      imageURL: '',
+      image: '',
       brand: nextProps.item.brand,
       model: nextProps.item.model,
       count: nextProps.item.count
@@ -47,7 +47,7 @@ class ItemDetails extends Component {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
     console.log(values);
-    // this.props.onRegisterUser(values);
+    this.props.editItem(this.props.id, values);
   }
 
   _handleInputChange = (e) => {
@@ -78,7 +78,7 @@ class ItemDetails extends Component {
     return (
       <div className="card card-block">
         <div className="carousel-inner">
-          <form className="form-horizontal" onSubmit={this.handleSubmit}>
+          <form className="form-horizontal" onSubmit={this._handleSubmit}>
             <fieldset>
               <div className="form-group">
                 <label htmlFor="inputTitle" className="col-md-2 control-label">Title</label>
@@ -158,8 +158,8 @@ class ItemDetails extends Component {
                     className="form-control"
                     id="inputImage"
                     placeholder="Image URL"
-                    value={this.state.imageURL}
-                    name='imageURL'
+                    value={this.state.image}
+                    name='image'
                     onChange={this._handleInputChange}
                   />
                 </div>

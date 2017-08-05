@@ -39,9 +39,10 @@ export const addItem = (item) => {
 }
 
 export const editItem = (itemId, token, data) => {
-  return axios.put(`${api}/items/%{itemId}?token=${token}`, data)
+  return axios.put(`${api}/items/${itemId}?token=${token}`, data)
     .then(function(response) {
       console.log(response);
+      return response;
     })
     .catch(err => {
       console.log('error', err);
