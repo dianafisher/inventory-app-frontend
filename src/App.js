@@ -125,7 +125,9 @@ class App extends Component {
     InventoryAPI.upcLookup(upc, token)
       .then((response) => {
         console.log(response);
-        // redirect to item details?
+        // redirect to item details
+        const itemId = response.data._id;        
+        window.location=`/item/${itemId}`;
       })
       .catch((error) => {
         console.log('error ' + error);
