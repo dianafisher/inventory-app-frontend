@@ -52,6 +52,8 @@ class App extends Component {
       alerts: [],
       token: token,
       items: [],
+      pages: 0,
+      page: 0,
       item: {},
       user: user,
       loggedIn: loggedIn
@@ -172,7 +174,7 @@ class App extends Component {
           type: 'success',
           msg: response.data.message
         });
-        this.setState({ alerts, user, loggedIn: true });
+        this.setState({ alerts, user, token, loggedIn: true });
       })
       .catch((error) => {
         console.log('error: ' + error);
@@ -215,11 +217,11 @@ class App extends Component {
       });
   }
 
-  _getItems = () => {
+  _getItems = (page) => {
     // get the token from our state
     const token = this.state.token;
     console.log('_getItems, token:', token);
-    InventoryAPI.getItems(token, 1)
+    InventoryAPI.getItems(token, page)
       .then((response) => {
         if (response.status === 403) {
           // need to log in again..
@@ -227,9 +229,12 @@ class App extends Component {
         } else {
           const data = response.data;
           console.log(data);
-          const items = response.data.items;
-          console.log(items);
-          this.setState({ items })
+          // const items = response.data.items;
+          // console.log(items);
+          // const page = data.page;
+          // const pageCount = data.pages;
+          // this.setState({ items, page, pageCount })
+          this.setState({ ...data });  //object spread
         }
 
       })
@@ -271,7 +276,12 @@ class App extends Component {
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <ListItems getItems={this._getItems} items={this.state.items}></ListItems>
+        <ListItems
+          getItems={this._getItems}
+          items={this.state.items}
+          page={this.state.page}
+          pages={this.state.pages}
+        ></ListItems>
       </div>
     )
   }

@@ -7,11 +7,34 @@ class ListItems extends Component {
   componentDidMount() {
     console.log('ListItems componentDidMount');
     console.log('props', this.props);
-    this.props.getItems();
+    this.props.getItems(1);
   }
 
   componentWillReceiveProps(nextProps) {
     console.log('componentWillReceiveProps', nextProps);
+  }
+
+  _onPageClick = (e) => {
+    console.log(e.target);
+    const name = e.target.name;
+    console.log(name);
+    const page = parseInt(name, 10);
+    this.props.getItems(page);
+  }
+
+  _onPreviousPage = (e) => {
+    const currentPage = this.props.page;
+    if (currentPage > 1) {
+      this.props.getItems(currentPage - 1);
+    }
+  }
+
+  _onNextPage = (e) => {
+    const currentPage = this.props.page;
+    const pageCount = this.props.pages;
+    if (currentPage < pageCount) {
+      this.props.getItems(currentPage + 1);
+    }
   }
 
   _renderItems = (items) => {
@@ -26,9 +49,44 @@ class ListItems extends Component {
               </div>
             ))}
           </div>
+          <nav aria-label="Page navigation">
+            <ul className='pagination'>
+              <li>
+                <a aria-label="Previous" onClick={this._onPreviousPage}>
+                  <span aria-hidden='true'>«</span>
+                  <div className='ripple-container'></div>
+                </a>
+              </li>
+
+              {this._renderPageNavigation()}
+
+              <li>
+                <a aria-label="Next" onClick={this._onNextPage}>
+                  <span aria-hidden='true'>»</span>
+                  <div className='ripple-container'></div>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     )
+  }
+
+  _renderPageNavigation = () => {
+    let pages = [];
+    const currentPage = this.props.page;
+    for(var i = 0; i < this.props.pages; i++) {
+      let pageNum = i+1;
+      let className = (pageNum == currentPage) ? 'active' : '';
+
+      pages.push((<li key={i} className={className}>
+        <a
+          name={pageNum}
+          onClick={this._onPageClick}
+        >{pageNum}</a></li>));
+    }
+    return pages;
   }
 
   _renderFilters = () => {
