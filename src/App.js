@@ -114,6 +114,9 @@ class App extends Component {
     InventoryAPI.deleteItem(itemId, token)
       .then((response) => {
         console.log(response);
+
+        // redirect to item list        
+        window.location=`/items`;
       })
       .catch((error) => {
         console.log('error ' + error);
@@ -126,7 +129,7 @@ class App extends Component {
       .then((response) => {
         console.log(response);
         // redirect to item details
-        const itemId = response.data._id;        
+        const itemId = response.data._id;
         window.location=`/item/${itemId}`;
       })
       .catch((error) => {
