@@ -226,7 +226,7 @@ class ItemDetails extends Component {
     const isEditing = this.state.isEditing;
     const details = this.props.item;
     console.log('details', details);
-    let imageURL = this.state.imageURL || details.image;
+    let imageURL = this.state.image || details.image;
     return (
       <div className='container'>
         <div className='row'>

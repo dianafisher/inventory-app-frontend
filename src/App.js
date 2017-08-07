@@ -103,6 +103,9 @@ class App extends Component {
     InventoryAPI.editItem(itemId, token, data)
       .then((response) => {
         console.log(response);
+
+        // redirect to item details
+        window.location=`/item/${itemId}`;
       })
       .catch((error) => {
         console.log('error ' + error);
@@ -115,7 +118,7 @@ class App extends Component {
       .then((response) => {
         console.log(response);
 
-        // redirect to item list        
+        // redirect to item list
         window.location=`/items`;
       })
       .catch((error) => {
@@ -141,13 +144,7 @@ class App extends Component {
     InventoryAPI.registerUser(user)
     .then((response) => {
       console.log(response);
-      const user = response.user;
-      let alerts = [];
-      alerts.push({
-        type: 'success',
-        msg: response.data.message
-      });
-      this.setState({ alerts, user, loggedIn: true });
+      this._userFromResponse(response);
     })
     .catch((error) => {
       console.log('error: ' + error);
@@ -164,22 +161,26 @@ class App extends Component {
     });
   }
 
+  _userFromResponse = (response) => {
+    const token = response.data.token;
+    // save the token to local storage
+    saveJwtToken(token);
+
+    // parse the user from the token
+    const user = parseJwt(token);
+    let alerts = [];
+    alerts.push({
+      type: 'success',
+      msg: response.data.message
+    });
+    this.setState({ alerts, user, token, loggedIn: true });
+  }
+
   _loginUser = (user) => {
     InventoryAPI.login(user)
       .then((response) => {
         console.log(response);
-        const token = response.data.token;
-        // save the token to local storage
-        saveJwtToken(token);
-
-        // parse the user from the token
-        const user = parseJwt(token);
-        let alerts = [];
-        alerts.push({
-          type: 'success',
-          msg: response.data.message
-        });
-        this.setState({ alerts, user, token, loggedIn: true });
+        this._userFromResponse(response);
       })
       .catch((error) => {
         console.log('error: ' + error);
