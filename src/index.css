@@ -4,6 +4,18 @@ body {
   font-family: sans-serif;
 }
 
+#root {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left:0;
+}
+
+.sb-site-container {
+  height: 100%;
+}
+
 .alert {
   height: 74px;
 }

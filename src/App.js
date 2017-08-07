@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import './App.css';
 import * as InventoryAPI from './utils/InventoryAPI';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
