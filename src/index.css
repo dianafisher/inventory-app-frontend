@@ -30,3 +30,7 @@ body {
 a.navlink.active:before {
   /*height: 3px !important;*/
 }
+
+.center {
+  top: 40%;
+}
