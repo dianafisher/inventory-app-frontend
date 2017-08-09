@@ -262,7 +262,8 @@ class App extends Component {
     return (
       <div>
         <Header user={this.state.user} isLoggedIn={this.state.loggedIn} onLogout={this.logout}/>
-        <NavBar />
+        {this.state.loggedIn ? <NavBar /> : ''}
+
         { alerts && (
           alerts.map((a, idx) => (
             <Alert
@@ -317,6 +318,24 @@ class App extends Component {
     )
   }
 
+  _renderLogin = () => {
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <Login onLoginUser={this._loginUser}></Login>
+      </div>
+    )
+  }
+
+  _renderRegister = () => {
+    return (
+      <div>
+        {this._renderHeaderAndNavbar()}
+        <Register onRegisterUser={this._registerUser}></Register>
+      </div>      
+    )
+  }
+
   _renderUPCLookup = () => {
     return (
       <div>
@@ -348,14 +367,14 @@ class App extends Component {
           } />
           <Route path='/login' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
-            ( <Login onLoginUser={this._loginUser}></Login> )
+            ( this._renderLogin() )
           )} />
           <Route path='/logout' render={
               this._renderLogout
           } />
           <Route path='/register' render={( { history }) => (
             this.state.loggedIn ? ( <Redirect to="/items"/> ) :
-            ( <Register onRegisterUser={this._registerUser}></Register> )
+            ( this._renderRegister() )
           )} />
         </div>
       </Router>

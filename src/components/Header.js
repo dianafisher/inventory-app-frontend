@@ -5,6 +5,7 @@ class Header extends Component {
 
   render() {
     const loggedIn = this.props.isLoggedIn;
+    console.log(this.props);
     return (
       <header className='ms-header ms-header-primary'>
         <div className='container container-full'>
@@ -34,7 +35,7 @@ class Header extends Component {
               </div>
             }
 
-            { this.props.user !== null &&
+            { this.props.user &&
               <div className='row'>
                 Logged in as { this.props.user.name }
                 <Link
