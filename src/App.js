@@ -51,6 +51,7 @@ class App extends Component {
       alerts: [],
       token: token,
       items: [],
+      brands: [],
       pages: 0,
       page: 0,
       item: {},
@@ -248,6 +249,37 @@ class App extends Component {
       })
   }
 
+  _getBrands = () => {
+    const token = this.state.token;
+    console.log('_getBrands, token:', token);
+    InventoryAPI.getBrands(token)
+      .then((response) => {
+        const brands = response.data;
+        this.setState({ brands });
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
+  _getItemsByBrand = (brand, page) => {
+    const token = this.state.token;
+    InventoryAPI.getItemsByBrand(token, brand, page)
+      .then((response) => {
+        if (response.status === 403) {
+          // need to log in again..
+          this._showAuthenticationAlert();
+        } else {
+          const data = response.data;
+          console.log(data);
+          this.setState({ items: data });  //object spread
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
   _showAuthenticationAlert = () => {
     let alerts = [];
     alerts.push({
@@ -284,7 +316,10 @@ class App extends Component {
         {this._renderHeaderAndNavbar()}
         <ListItems
           getItems={this._getItems}
+          getBrands={this._getBrands}
+          getItemsByBrand={this._getItemsByBrand}
           items={this.state.items}
+          brands={this.state.brands}
           page={this.state.page}
           pages={this.state.pages}
         ></ListItems>
@@ -332,7 +367,7 @@ class App extends Component {
       <div>
         {this._renderHeaderAndNavbar()}
         <Register onRegisterUser={this._registerUser}></Register>
-      </div>      
+      </div>
     )
   }
 

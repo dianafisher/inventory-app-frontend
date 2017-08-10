@@ -4,10 +4,20 @@ import Item from './Item';
 
 class ListItems extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filter: 'All'
+    };
+  }
+
   componentDidMount() {
     console.log('ListItems componentDidMount');
     console.log('props', this.props);
     this.props.getItems(1);
+
+    this.props.getBrands();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,10 +47,24 @@ class ListItems extends Component {
     }
   }
 
+  _onCheckboxChange = (e) => {
+    console.log(e.target);
+    const brand = e.target.value;
+    console.log(brand + ' checked!');
+
+    if (brand === 'All') {
+      this.props.getItems(this.props.page);
+    } else {
+      // filter items by brand
+      this.props.getItemsByBrand(brand, 1);
+    }
+    this.setState({ filter: brand });
+  }
+
   _renderItems = (items) => {
     return (
       <div className='row'>
-        { this._renderFilters() }
+        { this._renderFilterList() }
         <div className='col-md-9'>
           <div className='row' id='Container' style={styles.container}>
             {items.map((item) => (
@@ -90,6 +114,54 @@ class ListItems extends Component {
   }
 
   _renderFilters = () => {
+    const brands = this.props.brands;
+    let divs = [];
+    const currentFilter = this.state.filter;
+    let checked = ('All' === currentFilter);
+    let className = (checked ? 'filter active' : 'filter');
+
+    // Add 'All' filter first
+    divs.push(<div className='radio no-mb' key='0'>
+      <label>
+        <input
+          type='radio'
+          value='All'
+          onChange={this._onCheckboxChange}
+          className={className}
+          checked={checked}
+        />
+        <span className='circle'></span>
+        <span className='check'></span>
+        All
+      </label>
+              </div>);
+
+    for (var i = 0; i < brands.length; i++) {
+      let brand = brands[i];
+      let checked = (brand === currentFilter);
+      let className = (checked ? 'filter active' : 'filter');
+
+      divs.push(
+        <div className='radio no-mb' key={i+1}>
+          <label>
+            <input
+              type='radio'
+              value={brand}
+              onChange={this._onCheckboxChange}
+              className={className}
+              checked={checked}
+            />
+            <span className='circle'></span>
+            <span className='check'></span>
+            {brand}
+          </label>
+        </div>
+      );
+    }
+    return divs;
+  }
+
+  _renderFilterList = () => {
     return (
       <div className='col-md-3'>
         <div className='card card-primary'>
@@ -101,16 +173,19 @@ class ListItems extends Component {
               <h4 className='mb-1 no-mt'>Brands</h4>
               <fieldset>
                 <div className='form-group no-mt'>
+                  {this._renderFilters()}
+                </div>
+                {/* <div className='form-group no-mt'>
                   <div className='checkbox ml-2'>
                     <label>
-                      <input type='checkbox' value='.funko' />
-                      <span className='checkbox-material'>
-                        <span className='check'></span>
-                      </span>
-                      Funko
+                  <input type='checkbox' value='.funko' />
+                  <span className='checkbox-material'>
+                  <span className='check'></span>
+                  </span>
+                  Funko
                     </label>
                   </div>
-                </div>
+                </div> */}
               </fieldset>
             </form>
           </div>

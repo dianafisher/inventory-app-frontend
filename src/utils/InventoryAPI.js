@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const api = "https://lego-inventory-app.herokuapp.com/api";
-// const api = "http://localhost:5000/api";
+// const api = "https://lego-inventory-app.herokuapp.com/api";
+const api = "http://localhost:5000/api";
 
 
 export const getItems = (token, pageNumber) => {
@@ -14,6 +14,32 @@ export const getItems = (token, pageNumber) => {
     .catch(err => {
       console.log(err);
       console.log(err.response);
+      return err.response;
+    })
+}
+
+export const getBrands = (token) => {
+  return axios.get(`${api}/brands?token=${token}`)
+    .then(function(response) {
+      console.log(response);
+      return response;
+    })
+    .catch(err => {
+      console.log(err);
+      console.log(err.response);
+      return err.response;
+    })
+}
+
+export const getItemsByBrand = (token, brand, pageNumber) => {
+  const encodedBrand = encodeURIComponent(brand);  
+  return axios.get(`${api}/brands/items?brand=${encodedBrand}&page=${pageNumber}&token=${token}`)
+    .then(function(response) {
+      console.log(response);
+      return response;
+    })
+    .catch(err => {
+      console.log(err);
       return err.response;
     })
 }
