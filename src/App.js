@@ -227,7 +227,7 @@ class App extends Component {
     // get the token from our state
     const token = this.state.token;
     console.log('_getItems, token:', token);
-    InventoryAPI.getItems(token, page)
+    InventoryAPI.getItems(token, page, 15)
       .then((response) => {
         if (response.status === 403) {
           // need to log in again..
@@ -264,7 +264,7 @@ class App extends Component {
 
   _getItemsByBrand = (brand, page) => {
     const token = this.state.token;
-    InventoryAPI.getItemsByBrand(token, brand, page)
+    InventoryAPI.getItemsByBrand(token, brand, page, 15)
       .then((response) => {
         if (response.status === 403) {
           // need to log in again..
@@ -272,7 +272,7 @@ class App extends Component {
         } else {
           const data = response.data;
           console.log(data);
-          this.setState({ items: data });  //object spread
+          this.setState({ ...data });  //object spread
         }
       })
       .catch(error => {

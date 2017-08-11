@@ -4,9 +4,9 @@ import axios from 'axios';
 const api = "http://localhost:5000/api";
 
 
-export const getItems = (token, pageNumber) => {
+export const getItems = (token, pageNumber, limit) => {
   console.log('getItems, token:', token);
-  return axios.get(`${api}/items?page=${pageNumber}&token=${token}`)
+  return axios.get(`${api}/items?page=${pageNumber}&limit=${limit}&token=${token}`)
     .then(function(response) {
       console.log(response);
       return response;
@@ -31,9 +31,9 @@ export const getBrands = (token) => {
     })
 }
 
-export const getItemsByBrand = (token, brand, pageNumber) => {
-  const encodedBrand = encodeURIComponent(brand);  
-  return axios.get(`${api}/brands/items?brand=${encodedBrand}&page=${pageNumber}&token=${token}`)
+export const getItemsByBrand = (token, brand, pageNumber, limit) => {
+  const encodedBrand = encodeURIComponent(brand);
+  return axios.get(`${api}/brands/items?brand=${encodedBrand}&page=${pageNumber}&limit=${limit}&token=${token}`)
     .then(function(response) {
       console.log(response);
       return response;
