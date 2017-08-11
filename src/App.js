@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import * as InventoryAPI from './utils/InventoryAPI';
 import Header from './components/Header';

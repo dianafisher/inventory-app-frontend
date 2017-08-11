@@ -102,7 +102,7 @@ class ListItems extends Component {
     const currentPage = this.props.page;
     for(var i = 0; i < this.props.pages; i++) {
       let pageNum = i+1;
-      let className = (pageNum == currentPage) ? 'active' : '';
+      let className = (pageNum === currentPage) ? 'active' : '';
 
       pages.push((<li key={i} className={className}>
         <a
@@ -222,8 +222,14 @@ const styles = {
   }
 }
 
-// ListItems.propTypes = {
-//   token: PropTypes.string.isRequired
-// }
+ListItems.propTypes = {
+  // token: PropTypes.string.isRequired
+  getItems: PropTypes.func.isRequired,
+  getBrands: PropTypes.func.isRequired,
+  getItemsByBrand: PropTypes.func.isRequired,
+  items: PropTypes.array.isRequired,
+  brands: PropTypes.array.isRequired,
+  pages: PropTypes.array.isRequired
+}
 
 export default ListItems;
