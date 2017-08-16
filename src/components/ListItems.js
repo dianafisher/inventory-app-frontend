@@ -229,7 +229,7 @@ ListItems.propTypes = {
   getItemsByBrand: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   brands: PropTypes.array.isRequired,
-  pages: PropTypes.array.isRequired
+  pages: PropTypes.number.isRequired
 }
 
 export default ListItems;

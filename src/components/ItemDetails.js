@@ -19,11 +19,11 @@ class ItemDetails extends Component {
   }
 
   componentDidMount() {
-    console.log('ItemDetails componentDidMount');
+    // console.log('ItemDetails componentDidMount');
     // get the item id from the match object params
     const itemId = this.props.id;
-    console.log('componentDidMount: itemId', itemId);
-    console.log(this.props);
+    // console.log('componentDidMount: itemId', itemId);
+    // console.log(this.props);
     this.props.getItem(itemId);
     // // call the inventory api to get the item details
     // this._getItem(itemId);
@@ -45,22 +45,22 @@ class ItemDetails extends Component {
   _handleSubmit = (e) => {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
-    console.log(values);
+    // console.log(values);
     this.props.editItem(this.props.id, values);
   }
 
   _handleInputChange = (e) => {
     const target = e.target;
-    console.log(target.type);
+    // console.log(target.type);
     const name = target.name;
-    console.log(name);
+    // console.log(name);
 
     this.setState( {[name]: e.target.value} );
 
   }
 
   _onEditClick = (e) => {
-    console.log(e.target.name + ' clicked');
+    // console.log(e.target.name + ' clicked');
     if (e.target.name === 'editButton') {
       // toggle edit form visibility
       const editing = this.state.isEditing;
@@ -188,7 +188,7 @@ class ItemDetails extends Component {
 
   _renderDetails = () => {
     const details = this.props.item;
-    console.log('details', details);
+    // console.log('details', details);
 
     return (
       <div className='card'>
@@ -224,7 +224,7 @@ class ItemDetails extends Component {
 
     const isEditing = this.state.isEditing;
     const details = this.props.item;
-    console.log('details', details);
+    // console.log('details', details);
     let imageURL = this.state.image || details.image;
     return (
       <div className='container'>

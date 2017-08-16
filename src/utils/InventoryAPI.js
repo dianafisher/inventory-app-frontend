@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const api = "https://lego-inventory-app.herokuapp.com/api";
-// const api = "http://localhost:5000/api";
+// const api = "https://lego-inventory-app.herokuapp.com/api";
+const api = "http://localhost:5000/api";
 
 
 export const getItems = (token, pageNumber, limit) => {
-  console.log('getItems, token:', token);
+  // console.log('getItems, token:', token);
   return axios.get(`${api}/items?page=${pageNumber}&limit=${limit}&token=${token}`)
     .then(function(response) {
       console.log(response);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+
 import * as InventoryAPI from './utils/InventoryAPI';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
@@ -32,7 +33,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    console.log('App constructor');
+    // console.log('App constructor');
 
     this._initializeState();
   }
@@ -40,7 +41,7 @@ class App extends Component {
   _initializeState = () => {
     // load the JWT token to see if we have a user logged in
     const token = loadJwtToken();
-    console.log('token:', token);
+    // console.log('token:', token);
     let user;
     let loggedIn = false;
     if (token) {
@@ -55,13 +56,10 @@ class App extends Component {
       pages: 0,
       page: 0,
       item: {},
+      redirectPath: '',
       user: user,
       loggedIn: loggedIn
     }
-  }
-
-  componentDidMount() {
-    console.log('App componentDidMount');
   }
 
   _closeAlert(idx) {
@@ -131,9 +129,13 @@ class App extends Component {
     InventoryAPI.upcLookup(upc, token)
       .then((response) => {
         console.log(response);
+        const item = response.data;
+
         // redirect to item details
         const itemId = response.data._id;
-        window.location=`/item/${itemId}`;
+        // window.location=`/item/${itemId}`;
+
+        this.setState({ item, redirectPath: `/item/${itemId}` });
       })
       .catch((error) => {
         console.log('error ' + error);
@@ -155,7 +157,7 @@ class App extends Component {
           type: 'error',
           msg: error.response.data.message
         });
-        console.log(alerts);
+        // console.log(alerts);
         this.setState({ alerts });
       }
     });
@@ -179,7 +181,7 @@ class App extends Component {
   _loginUser = (user) => {
     InventoryAPI.login(user)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this._userFromResponse(response);
       })
       .catch((error) => {
@@ -226,7 +228,7 @@ class App extends Component {
   _getItems = (page) => {
     // get the token from our state
     const token = this.state.token;
-    console.log('_getItems, token:', token);
+    // console.log('_getItems, token:', token);
     InventoryAPI.getItems(token, page, 15)
       .then((response) => {
         if (response.status === 403) {
@@ -234,7 +236,7 @@ class App extends Component {
           this._showAuthenticationAlert();
         } else {
           const data = response.data;
-          console.log(data);
+          // console.log(data);
           // const items = response.data.items;
           // console.log(items);
           // const page = data.page;
@@ -251,7 +253,7 @@ class App extends Component {
 
   _getBrands = () => {
     const token = this.state.token;
-    console.log('_getBrands, token:', token);
+    // console.log('_getBrands, token:', token);
     InventoryAPI.getBrands(token)
       .then((response) => {
         const brands = response.data;
@@ -371,12 +373,16 @@ class App extends Component {
     )
   }
 
-  _renderUPCLookup = () => {
+  _renderUPCLookup = (history) => {
+    console.log('history', history)
+    console.log('this.state.item', this.state.item);
+
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <UPCLookup onUPCLookup={this._upcLookup}></UPCLookup>
+        <UPCLookup onUPCLookup={this._upcLookup} item={this.state.item}></UPCLookup>
       </div>
+
     )
   }
 

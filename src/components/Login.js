@@ -16,15 +16,15 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
-    console.log(values);
+    // console.log(values);
     this.props.onLoginUser(values);
   }
 
   handleInputChange = (e) => {
     const target = e.target;
-    console.log(target.type);
+    // console.log(target.type);
     const name = target.name;
-    console.log(name);
+    // console.log(name);
   }
 
   render() {
