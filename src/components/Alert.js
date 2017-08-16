@@ -6,12 +6,10 @@ function Alert (props) {
   const type = props.type;
   let className, text, iconClassName;
   if (type === 'success') {
-    className = 'alert alert-success alert dimissible';
-    text = 'Success!';
+    className = 'alert alert-success alert dimissible';    
     iconClassName = 'zmdi zmdi-check';
   } else if (type === 'error') {
     className = 'alert alert-danger alert dimissible';
-    text = 'Error!';
     iconClassName = 'zmdi zmdi-close-circle';
   }
   return (

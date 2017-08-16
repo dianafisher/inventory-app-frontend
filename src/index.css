@@ -34,3 +34,9 @@ a.navlink.active:before {
 .center {
   top: 40%;
 }
+
+.alert {
+  position: absolute;
+  z-index: 5;
+  width: 100%;
+}

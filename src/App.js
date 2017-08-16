@@ -186,6 +186,16 @@ class App extends Component {
       })
       .catch((error) => {
         console.log('error: ' + error);
+        console.log(error.response);
+        const message = error.response.data.message;
+
+        let alerts = [];
+        alerts.push({
+          type: 'error',
+          msg: message
+        });
+
+        this.setState({ alerts });
       })
   }
 

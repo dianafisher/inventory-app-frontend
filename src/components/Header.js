@@ -5,7 +5,7 @@ class Header extends Component {
 
   render() {
     const loggedIn = this.props.isLoggedIn;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <header className='ms-header ms-header-primary'>
         <div className='container container-full'>
