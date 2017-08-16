@@ -13,15 +13,15 @@ class ListItems extends Component {
   }
 
   componentDidMount() {
-    console.log('ListItems componentDidMount');
-    console.log('props', this.props);
+    // console.log('ListItems componentDidMount');
+    // console.log('props', this.props);
     this.props.getItems(1);
 
     this.props.getBrands();
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
+    // console.log('componentWillReceiveProps', nextProps);
   }
 
   _onPageClick = (e) => {
