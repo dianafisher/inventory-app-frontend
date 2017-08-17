@@ -56,7 +56,6 @@ class App extends Component {
       pages: 0,
       page: 0,
       item: {},
-      redirectPath: '',
       user: user,
       loggedIn: loggedIn
     }
@@ -96,36 +95,43 @@ class App extends Component {
     });
   }
 
-  _editItem = (itemId, data) => {
+  _editItem = (obj, itemId, data) => {
+    console.log('editItem');
+    console.log(obj);
     const token = this.state.token;
     InventoryAPI.editItem(itemId, token, data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+        const item = response.data;
+
+        this.setState({ item });
 
         // redirect to item details
-        window.location=`/item/${itemId}`;
+        obj.history.push(`/item/${itemId}`);
       })
       .catch((error) => {
         console.log('error ' + error);
       })
   }
 
-  _deleteItem = (itemId) => {
+  _deleteItem = (obj, itemId) => {
     const token = this.state.token;
     InventoryAPI.deleteItem(itemId, token)
       .then((response) => {
         console.log(response);
 
         // redirect to item list
-        window.location=`/items`;
+        obj.history.push(`/items`);
+
       })
       .catch((error) => {
         console.log('error ' + error);
       })
   }
 
-  _upcLookup = (upc) => {
+  _upcLookup = (history, upc) => {
     const token = this.state.token;
+    console.log(history);
     InventoryAPI.upcLookup(upc, token)
       .then((response) => {
         console.log(response);
@@ -133,9 +139,7 @@ class App extends Component {
 
         // redirect to item details
         const itemId = response.data._id;
-        // window.location=`/item/${itemId}`;
-
-        this.setState({ item, redirectPath: `/item/${itemId}` });
+        history.history.push(`/item/${itemId}`);
       })
       .catch((error) => {
         console.log('error ' + error);
@@ -340,6 +344,7 @@ class App extends Component {
   }
 
   _renderItemDetails = (obj) => {
+    console.log('renderItemDetails');
     console.log(obj);
     return (
       <div>
@@ -348,8 +353,8 @@ class App extends Component {
           id={obj.match.params.id}
           getItem={this._getItem}
           item={this.state.item}
-          editItem={this._editItem}
-          deleteItem={this._deleteItem}
+          editItem={this._editItem.bind(this, obj)}
+          deleteItem={this._deleteItem.bind(this, obj)}
         ></ItemDetails>
       </div>
     )
@@ -385,12 +390,11 @@ class App extends Component {
 
   _renderUPCLookup = (history) => {
     console.log('history', history)
-    console.log('this.state.item', this.state.item);
 
     return (
       <div>
         {this._renderHeaderAndNavbar()}
-        <UPCLookup onUPCLookup={this._upcLookup} item={this.state.item}></UPCLookup>
+        <UPCLookup onUPCLookup={this._upcLookup.bind(this, history)} ></UPCLookup>
       </div>
 
     )

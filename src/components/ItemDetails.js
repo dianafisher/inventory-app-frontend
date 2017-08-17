@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import serializeForm from 'form-serialize';
 
 class ItemDetails extends Component {
@@ -14,7 +15,8 @@ class ItemDetails extends Component {
       image: props.item.image,
       brand: props.item.brand,
       model: props.item.model,
-      count: props.item.count
+      count: props.item.count,
+      redirectPath: ''
     };
   }
 
@@ -32,13 +34,14 @@ class ItemDetails extends Component {
   componentWillReceiveProps(nextProps) {
     console.log('componentWillReceiveProps', nextProps);
     console.log(nextProps.item);
+
     this.setState( {
       title: nextProps.item.title,
       description: nextProps.item.description,
       image: '',
       brand: nextProps.item.brand,
       model: nextProps.item.model,
-      count: nextProps.item.count
+      count: nextProps.item.count,
     } )
   }
 
@@ -47,6 +50,7 @@ class ItemDetails extends Component {
     const values = serializeForm(e.target, { hash: true });
     // console.log(values);
     this.props.editItem(this.props.id, values);
+    this.setState({isEditing: false});
   }
 
   _handleInputChange = (e) => {
@@ -226,6 +230,7 @@ class ItemDetails extends Component {
     const details = this.props.item;
     // console.log('details', details);
     let imageURL = this.state.image || details.image;
+
     return (
       <div className='container'>
         <div className='row'>
