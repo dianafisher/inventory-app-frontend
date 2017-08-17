@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-// Header is a stateless functional component
+// NavBar is a stateless functional component
 function NavBar (props) {
-  console.log(props);
   return (
     <nav className='navbar navbar-static-top yamm ms-navbar ms-navbar-primary'>
       <div className='container container-full'>
