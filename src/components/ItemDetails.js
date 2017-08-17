@@ -10,18 +10,12 @@ class ItemDetails extends Component {
 
     this.state = {
       isEditing: false,
-      title: props.item.title,
-      description: props.item.description,
-      image: props.item.image,
-      brand: props.item.brand,
-      model: props.item.model,
-      count: props.item.count,
-      redirectPath: ''
+      item: {},
     };
   }
 
   componentDidMount() {
-    // console.log('ItemDetails componentDidMount');
+    console.log('ItemDetails componentDidMount');
     // get the item id from the match object params
     const itemId = this.props.id;
     // console.log('componentDidMount: itemId', itemId);
@@ -32,16 +26,11 @@ class ItemDetails extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
-    console.log(nextProps.item);
+    // console.log('componentWillReceiveProps', nextProps);
+    // console.log(nextProps.item);
 
     this.setState( {
-      title: nextProps.item.title,
-      description: nextProps.item.description,
-      image: '',
-      brand: nextProps.item.brand,
-      model: nextProps.item.model,
-      count: nextProps.item.count,
+      item: nextProps.item
     } )
   }
 
@@ -49,7 +38,7 @@ class ItemDetails extends Component {
     e.preventDefault();
     const values = serializeForm(e.target, { hash: true });
     // console.log(values);
-    this.props.editItem(this.props.id, values);
+    this.props.editItem(this.state.item._id, values);
     this.setState({isEditing: false});
   }
 
@@ -191,19 +180,19 @@ class ItemDetails extends Component {
   }
 
   _renderDetails = () => {
-    const details = this.props.item;
+    const item = this.state.item;
     // console.log('details', details);
 
     return (
       <div className='card'>
         <div className='card-block'>
-          <h2>{details.title}</h2>
-          <p className='lead'>{details.description}</p>
+          <h2>{item.title}</h2>
+          <p className='lead'>{item.description}</p>
           <ul className='list-unstyled'>
-            <li><strong>Brand: </strong>{details.brand}</li>
-            <li><strong>Model: </strong>{details.model}</li>
-            <li><strong>UPC: </strong>{details.upc}</li>
-            <li><strong>Count: </strong>{details.count}</li>
+            <li><strong>Brand: </strong>{item.brand}</li>
+            <li><strong>Model: </strong>{item.model}</li>
+            <li><strong>UPC: </strong>{item.upc}</li>
+            <li><strong>Count: </strong>{item.count}</li>
           </ul>
           <button
             className="btn btn-primary btn-block btn-raised mt-2 no-mb"
@@ -227,7 +216,7 @@ class ItemDetails extends Component {
   render() {
 
     const isEditing = this.state.isEditing;
-    const details = this.props.item;
+    const details = this.state.item;
     // console.log('details', details);
     let imageURL = this.state.image || details.image;
 

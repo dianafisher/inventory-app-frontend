@@ -230,7 +230,6 @@ class App extends Component {
           this._showAuthenticationAlert();
         } else {
           const item = response.data;
-          console.log(item);
           this.setState( { item } );
         }
       })
@@ -344,8 +343,8 @@ class App extends Component {
   }
 
   _renderItemDetails = (obj) => {
-    console.log('renderItemDetails');
-    console.log(obj);
+    // console.log('renderItemDetails');
+    // console.log(obj);
     return (
       <div>
         {this._renderHeaderAndNavbar()}

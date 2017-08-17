@@ -47,7 +47,7 @@ export const getItemsByBrand = (token, brand, pageNumber, limit) => {
 export const getItem = (itemId, token) => {
   return axios.get(`${api}/items/${itemId}?token=${token}`)
     .then(function(response) {
-      console.log(response);
+      console.log('getItem:', response);
       return response;
     })
     .catch(err => {
