@@ -4,9 +4,9 @@ import React from 'react';
 function Alert (props) {
   console.log(props);
   const type = props.type;
-  let className, text, iconClassName;
+  let className, iconClassName;
   if (type === 'success') {
-    className = 'alert alert-success alert dimissible';    
+    className = 'alert alert-success alert dimissible';
     iconClassName = 'zmdi zmdi-check';
   } else if (type === 'error') {
     className = 'alert alert-danger alert dimissible';
@@ -25,7 +25,6 @@ function Alert (props) {
         </button>
         <strong>
           <i className={iconClassName}></i>
-          {/* {text} */}
         </strong>
         {`  ${props.msg}`}
       </div>

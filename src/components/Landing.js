@@ -8,7 +8,7 @@ function Landing (props) {
       <div className="intro-full-content index-1">
         <div className="container">
           <div className="text-center mb-4">
-            <span className="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2">🤖</span>
+            <span className="ms-logo ms-logo-lg ms-logo-white center-block mb-2 mt-2" role="img" aria-label="robot emoji">🤖</span>
             <h1 className="no-m ms-site-title color-white center-block ms-site-title-lg mt-2">Collectables
               <span>.Fun</span>
             </h1>

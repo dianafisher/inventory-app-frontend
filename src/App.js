@@ -134,11 +134,11 @@ class App extends Component {
     console.log(history);
     InventoryAPI.upcLookup(upc, token)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const item = response.data;
 
         // redirect to item details
-        const itemId = response.data._id;
+        const itemId = item._id;
         history.history.push(`/item/${itemId}`);
       })
       .catch((error) => {
@@ -149,7 +149,7 @@ class App extends Component {
   _registerUser = (user) => {
     InventoryAPI.registerUser(user)
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       this._userFromResponse(response);
     })
     .catch((error) => {

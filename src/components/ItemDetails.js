@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import serializeForm from 'form-serialize';
 
 class ItemDetails extends Component {
@@ -15,7 +14,7 @@ class ItemDetails extends Component {
   }
 
   componentDidMount() {
-    console.log('ItemDetails componentDidMount');
+    // console.log('ItemDetails componentDidMount');
     // get the item id from the match object params
     const itemId = this.props.id;
     // console.log('componentDidMount: itemId', itemId);
@@ -204,10 +203,6 @@ class ItemDetails extends Component {
             onClick={this._onDeleteClick}
             name='deleteButton'
           >Delete Item</button>
-          {/* <Link
-            to={`/edit/${details._id}`}
-            className='btn btn-primary btn-block btn-raised mt-2 no-mb'
-          >Edit Item</Link> */}
         </div>
       </div>
     )

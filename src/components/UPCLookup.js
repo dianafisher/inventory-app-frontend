@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import serializeForm from 'form-serialize';
 
@@ -27,7 +26,7 @@ class UPCLookup extends Component {
     const target = e.target;
     // console.log(target.type);
     const name = target.name;
-    // console.log(name);
+    console.log(name);
 
     // TODO update state based on text entered in upc form input
   }
@@ -46,9 +45,7 @@ class UPCLookup extends Component {
     return length === 12 && numbers.test(value);
   }
 
-  render() {
-    const item = this.state.item;
-
+  render() {    
     return(
       <div>
         <div className='container'>

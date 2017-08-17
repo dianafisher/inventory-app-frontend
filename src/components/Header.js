@@ -11,7 +11,7 @@ class Header extends Component {
         <div className='container container-full'>
           <div className='ms-title'>
             <Link to='/'>
-              <span className='ms-logo animated zoomInDown animation-delay-5'>🤖</span>
+              <span className='ms-logo animated zoomInDown animation-delay-5' role="img" aria-label="robot emoji">🤖</span>
               <h1 className='animated fadeInRight animation-delay-6'>Collectables
                 <span>.Fun</span>
               </h1>
