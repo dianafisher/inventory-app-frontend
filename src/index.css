@@ -40,3 +40,7 @@ a.navlink.active:before {
   z-index: 5;
   width: 100%;
 }
+
+.form-group.is-focused .help-block {
+    display: none;
+}
